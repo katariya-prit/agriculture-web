@@ -1,3 +1,4 @@
+// Section/Profile/Profile.tsx
 import { useEffect, useMemo, useState } from "react";
 import {
     Mail,
@@ -14,11 +15,10 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../lib/api";
-import SellingAccountModal from "./RequireSellingAccount";
+import SellingAccountModal from "./SellingAccountModal";
 
 const theme = {
     forest: "#0B3D26",
-    forestSoft: "#12532F",
     leaf: "#1E8F4E",
     leafSoft: "#EAF6EE",
     paper: "#F4F8F5",
@@ -29,9 +29,6 @@ const theme = {
     amberSoft: "#FDF3DC",
 } as const;
 
-/* ------------------------------------------------------------------ */
-/*  Types — mirrors backend response shape                            */
-/* ------------------------------------------------------------------ */
 interface ChecklistEntry {
     key: string;
     label: string;
@@ -48,30 +45,22 @@ interface SellingAccount {
     aadhaarNumber?: string;
     aadhaarVerified?: boolean;
     photoUrl?: string | null;
-    dateOfBirth?: string | null;
-    gender?: string | null;
     village?: string | null;
     taluka?: string | null;
     district?: string | null;
     state?: string | null;
-    pincode?: string | null;
-    surveyNumber?: string | null;
     profileCompletion?: {
         percent: number;
         checklist: ChecklistEntry[];
     };
 }
 
-/* Maps backend checklist keys -> icon + short description */
 const CHECKLIST_META: Record<string, { icon: LucideIcon; desc: string }> = {
     basicIdentity: { icon: User, desc: "Photo, janm tarikh, gender" },
     farmAndLandDetails: { icon: MapPin, desc: "Village, taluka, survey number" },
     cropAndProductionInfo: { icon: Sprout, desc: "Pak, season, ane yield details (optional)" },
 };
 
-/* ------------------------------------------------------------------ */
-/*  Circular progress ring                                             */
-/* ------------------------------------------------------------------ */
 interface ProgressRingProps {
     percent: number;
     size?: number;
@@ -113,14 +102,7 @@ function ProgressRing({ percent, size = 120, stroke = 10 }: ProgressRingProps) {
     );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Checklist row                                                      */
-/* ------------------------------------------------------------------ */
-interface ChecklistItemProps {
-    item: ChecklistEntry;
-}
-
-function ChecklistItem({ item }: ChecklistItemProps) {
+function ChecklistItem({ item }: { item: ChecklistEntry }) {
     const meta = CHECKLIST_META[item.key];
     const Icon = meta?.icon ?? FileCheck2;
 
@@ -148,9 +130,6 @@ function ChecklistItem({ item }: ChecklistItemProps) {
     );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Loading skeleton                                                    */
-/* ------------------------------------------------------------------ */
 function ProfileSkeleton() {
     return (
         <div className="flex w-full flex-col gap-5 p-4 sm:p-6" style={{ background: theme.paper }}>
@@ -165,15 +144,12 @@ function ProfileSkeleton() {
     );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Page                                                                */
-/* ------------------------------------------------------------------ */
 export default function Profile() {
     const { user } = useAuth();
 
     const [account, setAccount] = useState<SellingAccount | null>(null);
     const [loading, setLoading] = useState(true);
-    const [modalOpen, setModalOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false); // 👈 modal open/close control
 
     async function fetchAccount() {
         setLoading(true);
@@ -181,8 +157,7 @@ export default function Profile() {
             const data = await api.getSellingAccount();
             setAccount(data?.sellingAccount ?? data ?? null);
         } catch (err: any) {
-            // 404 = selling account nathi banelu, e normal case chhe — error nathi
-            setAccount(null);
+            setAccount(null); // 404 = account nathi, e normal chhe
         } finally {
             setLoading(false);
         }
@@ -224,10 +199,7 @@ export default function Profile() {
                     style={{ borderColor: theme.line, background: theme.leafSoft }}
                 >
                     <div className="flex items-center gap-3">
-                        <div
-                            className="grid h-11 w-11 shrink-0 place-items-center rounded-xl"
-                            style={{ background: "white", color: theme.leaf }}
-                        >
+                        <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl" style={{ background: "white", color: theme.leaf }}>
                             <Store className="h-5 w-5" />
                         </div>
                         <div>
@@ -241,7 +213,7 @@ export default function Profile() {
                     </div>
                     <button
                         type="button"
-                        onClick={() => setModalOpen(true)}
+                        onClick={() => setModalOpen(true)} // 👈 aa click e modal khole chhe
                         className="flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
                         style={{ background: theme.leaf }}
                     >
@@ -281,7 +253,7 @@ export default function Profile() {
                         {account && (
                             <button
                                 type="button"
-                                onClick={() => setModalOpen(true)}
+                                onClick={() => setModalOpen(true)} // 👈 edit pan same modal
                                 className="mt-2 flex w-fit items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors"
                                 style={{ borderColor: theme.line, color: theme.forest }}
                             >
@@ -313,7 +285,7 @@ export default function Profile() {
                 </div>
             </div>
 
-            {/* profile completion — sirf selling account hoy tyare j dekhado */}
+            {/* profile completion */}
             {account && (
                 <div className="flex w-full flex-col gap-5 rounded-2xl border bg-white p-5 shadow-sm sm:p-6" style={{ borderColor: theme.line }}>
                     <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-center sm:justify-between">
@@ -342,6 +314,7 @@ export default function Profile() {
                 </div>
             )}
 
+            {/* 👇 aa j actual create/edit modal chhe — SellingAccountModal.tsx */}
             <SellingAccountModal
                 open={modalOpen}
                 onClose={() => setModalOpen(false)}

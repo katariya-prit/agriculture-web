@@ -11,7 +11,7 @@ import Products from "../Section/sall-management/Products";
 import CityGrid from "../components/Dashboard/CityGrid";
 import MarketList from "../components/Dashboard/MarketList";
 import MarketDetail from "../components/Dashboard/MarketDetail";
-import Profile from "../Section/Profile/Profile";
+import Profile from "../Section/Profile/Profile.tsx";
 import RequireSellingAccount from "../Section/Profile/RequireSellingAccount";
 
 export default function Router() {
