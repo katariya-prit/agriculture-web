@@ -79,7 +79,7 @@ export default function SellingAccountModal({ open, onClose, onCreated, initial 
             onClose();
         } catch (err: any) {
             const message =
-                err?.errors?.[0]?.message ||
+                err?.errors?.[0]?.message ||    
                 err?.message ||
                 "Selling account banavva ma error aavi.";
             toast.error(message);
