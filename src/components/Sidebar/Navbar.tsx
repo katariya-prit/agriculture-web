@@ -4,7 +4,7 @@ import { MdDashboard } from "react-icons/md";
 import type { IconType } from "react-icons";
 import { SiSalla } from "react-icons/si";
 import { TbShoppingCart } from "react-icons/tb";
-import { LuBookUser, LuLock } from "react-icons/lu";
+import { LuBookUser, LuLock, LuPlus } from "react-icons/lu";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "sonner";
 
@@ -23,9 +23,17 @@ interface NavItem {
 
 const navItems: NavItem[] = [
     { label: "Dashboard", icon: MdDashboard, path: "/dashboard" },
-    { label: "Create Product", icon: SiSalla, path: "/dashboard/sall-product", requiresSellingAccount: true },
+    {
+        label: "Product Selling",
+        icon: SiSalla,
+        path: "/dashboard/sall-product",
+        requiresSellingAccount: true,
+        children: [
+            { label: "Create Product", path: "/dashboard/sall-product", icon: LuPlus },
+            { label: "My Product", path: "/dashboard/my-product", icon: LuBookUser },
+        ],
+    },
     { label: "Product", icon: TbShoppingCart, path: "/dashboard/products" },
-    { label: "My Product", icon: LuBookUser, path: "/dashboard/my-product", requiresSellingAccount: true },
 ];
 
 export default function Navbar({ isOpen, onNavigate }: Props) {
@@ -34,8 +42,8 @@ export default function Navbar({ isOpen, onNavigate }: Props) {
     const { user } = useAuth();
     const hasSellingAccount = Boolean(user?.sellingAccountId);
 
-    const handleClick = (item: NavItem) => {
-        const locked = item.requiresSellingAccount && !hasSellingAccount;
+    const goTo = (path: string, requiresSellingAccount?: boolean) => {
+        const locked = requiresSellingAccount && !hasSellingAccount;
 
         if (locked) {
             toast.error("Pahela selling account banavo, pachi j aa page khulse.");
@@ -44,7 +52,7 @@ export default function Navbar({ isOpen, onNavigate }: Props) {
             return;
         }
 
-        navigate(item.path);
+        navigate(path);
         onNavigate?.();
     };
 
@@ -52,6 +60,7 @@ export default function Navbar({ isOpen, onNavigate }: Props) {
         <div className="w-full h-auto flex flex-col gap-2 p-0.2">
             {navItems.map((item) => {
                 const locked = item.requiresSellingAccount && !hasSellingAccount;
+                const isChildActive = item.children?.some((c) => c.path === location.pathname) ?? false;
 
                 return (
                     <div key={item.path} className={locked ? "opacity-50 cursor-not-allowed" : ""}>
@@ -59,11 +68,11 @@ export default function Navbar({ isOpen, onNavigate }: Props) {
                             icon={locked ? LuLock : item.icon}
                             label={item.label}
                             isOpen={isOpen}
-                            isActive={location.pathname === item.path}
+                            isActive={location.pathname === item.path || isChildActive}
                             activePath={location.pathname}
-                            onClick={() => handleClick(item)}
+                            onClick={() => goTo(item.path, item.requiresSellingAccount)}
                             children={locked ? undefined : item.children}
-                            onChildClick={(path) => handleClick({ ...item, path })}
+                            onChildClick={(path) => goTo(path, item.requiresSellingAccount)}
                         />
                     </div>
                 );

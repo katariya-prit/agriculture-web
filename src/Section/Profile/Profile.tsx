@@ -1,5 +1,5 @@
 // Section/Profile/Profile.tsx
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Mail,
     MapPin,
@@ -11,11 +11,13 @@ import {
     Pencil,
     Store,
     Plus,
+    Lightbulb,
     type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../lib/api";
 import SellingAccountModal from "./SellingAccountModal";
+import { analyzeProfile, type ChecklistEntry } from "../../services/Profileanalysisservice";
 
 const theme = {
     forest: "#0B3D26",
@@ -28,12 +30,6 @@ const theme = {
     gold: "#B4791B",
     amberSoft: "#FDF3DC",
 } as const;
-
-interface ChecklistEntry {
-    key: string;
-    label: string;
-    done: boolean;
-}
 
 interface SellingAccount {
     id: string;
@@ -49,16 +45,19 @@ interface SellingAccount {
     taluka?: string | null;
     district?: string | null;
     state?: string | null;
-    profileCompletion?: {
-        percent: number;
-        checklist: ChecklistEntry[];
-    };
+    dateOfBirth?: string | null;
+    gender?: string | null;
+    primaryCrops?: string[] | null;
+    cropSeason?: string | null;
+    farmingType?: string | null;
+    soilType?: string | null;
 }
 
-const CHECKLIST_META: Record<string, { icon: LucideIcon; desc: string }> = {
-    basicIdentity: { icon: User, desc: "Photo, janm tarikh, gender" },
-    farmAndLandDetails: { icon: MapPin, desc: "Village, taluka, survey number" },
-    cropAndProductionInfo: { icon: Sprout, desc: "Pak, season, ane yield details (optional)" },
+const CHECKLIST_META: Record<string, { icon: LucideIcon }> = {
+    quickInfo: { icon: Store },
+    identity: { icon: User },
+    farm: { icon: MapPin },
+    crop: { icon: Sprout },
 };
 
 interface ProgressRingProps {
@@ -103,8 +102,7 @@ function ProgressRing({ percent, size = 120, stroke = 10 }: ProgressRingProps) {
 }
 
 function ChecklistItem({ item }: { item: ChecklistEntry }) {
-    const meta = CHECKLIST_META[item.key];
-    const Icon = meta?.icon ?? FileCheck2;
+    const Icon = CHECKLIST_META[item.key]?.icon ?? FileCheck2;
 
     return (
         <div
@@ -122,7 +120,7 @@ function ChecklistItem({ item }: { item: ChecklistEntry }) {
                     {item.label}
                 </p>
                 <p className="truncate text-xs" style={{ color: theme.inkSoft }}>
-                    {meta?.desc ?? ""}
+                    {item.desc}
                 </p>
             </div>
             {item.done && <CheckCircle2 className="h-5 w-5 shrink-0" style={{ color: theme.leaf }} />}
@@ -149,14 +147,14 @@ export default function Profile() {
 
     const [account, setAccount] = useState<SellingAccount | null>(null);
     const [loading, setLoading] = useState(true);
-    const [modalOpen, setModalOpen] = useState(false); // 👈 modal open/close control
+    const [modalOpen, setModalOpen] = useState(false);
 
     async function fetchAccount() {
         setLoading(true);
         try {
             const data = await api.getSellingAccount();
             setAccount(data?.sellingAccount ?? data ?? null);
-        } catch (err: any) {
+        } catch {
             setAccount(null); // 404 = account nathi, e normal chhe
         } finally {
             setLoading(false);
@@ -167,11 +165,10 @@ export default function Profile() {
         fetchAccount();
     }, []);
 
-    const percent = account?.profileCompletion?.percent ?? 0;
-    const checklist = useMemo<ChecklistEntry[]>(
-        () => account?.profileCompletion?.checklist ?? [],
-        [account]
-    );
+    // 👇 backend na profileCompletion par depend karva ne badle,
+    // frontend potej user + account na actual data ne analyze kare chhe
+    const analysis = analyzeProfile(user, account);
+    const { percent, checklist, tip } = analysis;
     const remaining = checklist.filter((i) => !i.done);
 
     const displayName = user?.fullName ?? "";
@@ -213,7 +210,7 @@ export default function Profile() {
                     </div>
                     <button
                         type="button"
-                        onClick={() => setModalOpen(true)} // 👈 aa click e modal khole chhe
+                        onClick={() => setModalOpen(true)}
                         className="flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
                         style={{ background: theme.leaf }}
                     >
@@ -253,7 +250,7 @@ export default function Profile() {
                         {account && (
                             <button
                                 type="button"
-                                onClick={() => setModalOpen(true)} // 👈 edit pan same modal
+                                onClick={() => setModalOpen(true)}
                                 className="mt-2 flex w-fit items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors"
                                 style={{ borderColor: theme.line, color: theme.forest }}
                             >
@@ -285,40 +282,49 @@ export default function Profile() {
                 </div>
             </div>
 
-            {/* profile completion */}
-            {account && (
-                <div className="flex w-full flex-col gap-5 rounded-2xl border bg-white p-5 shadow-sm sm:p-6" style={{ borderColor: theme.line }}>
-                    <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-center sm:justify-between">
-                        <div>
-                            <h2 className="text-lg font-semibold" style={{ color: theme.ink }}>
-                                Profile completion
-                            </h2>
-                            <p className="text-sm" style={{ color: theme.inkSoft }}>
-                                Tamari profile complete karo, khareedar ne vadhu bharoso male.
-                            </p>
-                        </div>
-                        <ProgressRing percent={percent} />
-                    </div>
-
-                    {percent < 100 && (
-                        <p className="rounded-xl px-4 py-3 text-sm" style={{ background: theme.leafSoft, color: theme.forest }}>
-                            {remaining.length} step{remaining.length === 1 ? "" : "s"} baaki chhe — niche list check karo.
+            {/* profile completion — analyzeProfile() service na result thi banyu, hammesha dekhay (account na hoy to pan) */}
+            <div className="flex w-full flex-col gap-5 rounded-2xl border bg-white p-5 shadow-sm sm:p-6" style={{ borderColor: theme.line }}>
+                <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 className="text-lg font-semibold" style={{ color: theme.ink }}>
+                            Profile completion
+                        </h2>
+                        <p className="text-sm" style={{ color: theme.inkSoft }}>
+                            Tamari profile complete karo, khareedar ne vadhu bharoso male.
                         </p>
-                    )}
-
-                    <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2">
-                        {checklist.map((item) => (
-                            <ChecklistItem key={item.key} item={item} />
-                        ))}
                     </div>
+                    <ProgressRing percent={percent} />
                 </div>
-            )}
 
-            {/* 👇 aa j actual create/edit modal chhe — SellingAccountModal.tsx */}
+                {percent < 100 && (
+                    <p className="rounded-xl px-4 py-3 text-sm" style={{ background: theme.leafSoft, color: theme.forest }}>
+                        {remaining.length} step{remaining.length === 1 ? "" : "s"} baaki chhe — niche list check karo.
+                    </p>
+                )}
+
+                {tip && (
+                    <div className="flex items-start gap-2.5 rounded-xl border px-4 py-3 text-sm" style={{ borderColor: theme.line, background: theme.amberSoft }}>
+                        <Lightbulb className="mt-0.5 h-4 w-4 shrink-0" style={{ color: theme.gold }} />
+                        <span style={{ color: theme.ink }}>{tip}</span>
+                    </div>
+                )}
+
+                <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2">
+                    {checklist.map((item) => (
+                        <ChecklistItem key={item.key} item={item} />
+                    ))}
+                </div>
+            </div>
+
             <SellingAccountModal
                 open={modalOpen}
                 onClose={() => setModalOpen(false)}
-                onCreated={(newAccount) => setAccount(newAccount)}
+                onCreated={() => {
+                    // Sirf last PATCH response par bharoso rakhva ne badle,
+                    // fresh, fully-merged data backend thi fari fetch karo —
+                    // etle percent/checklist hammesha accurate rahe.
+                    fetchAccount();
+                }}
                 initial={
                     account
                         ? {

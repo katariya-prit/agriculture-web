@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import type { IconType } from "react-icons";
 
@@ -30,7 +30,24 @@ export default function NavButton({
   activePath,
 }: Props) {
   const [hovered, setHovered] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const hasChildren = !!children?.length;
+
+  // Sidebar collapse thay etle expanded state reset kari do, nahi to next time
+  // expand-vagar j sidebar khule tyare children achanak dekhai jay.
+  useEffect(() => {
+    if (!isOpen) setExpanded(false);
+  }, [isOpen]);
+
+  const handleRowClick = () => {
+    // Children hoy to row khali expand/collapse toggle kare — navigate nathi karto.
+    // Children na hoy to normal navigate.
+    if (hasChildren) {
+      setExpanded((e) => !e);
+      return;
+    }
+    onClick?.();
+  };
 
   return (
     <div
@@ -39,13 +56,13 @@ export default function NavButton({
       onMouseLeave={() => setHovered(false)}
     >
       <motion.div
-        onClick={onClick}
+        onClick={handleRowClick}
         whileTap={{ scale: 0.97 }}
         className={`w-full h-13 rounded-2xl flex items-center gap-3 px-3 cursor-pointer transition-colors
           ${isActive ? "text-white bg-green-500 navshadow" : "bg-green-600 text-white hover:bg-green-600"}
         `}
       >
-        <Icon size={35} className={`shrink-0 ${isActive ? "bg-white text-green-800 rounded-lg inset onlytext p-1.5": "p-1.5"}`} />
+        <Icon size={35} className={`shrink-0 ${isActive ? "bg-white text-green-800 rounded-lg inset onlytext p-1.5" : "p-1.5"}`} />
 
         {isOpen && (
           <motion.span
@@ -60,7 +77,7 @@ export default function NavButton({
 
         {isOpen && hasChildren && (
           <motion.span
-            animate={{ rotate: hovered ? 180 : 0 }}
+            animate={{ rotate: expanded ? 180 : 0 }}
             className={`text-xs ${isActive ? "text-white/70" : "text-green-700/60"}`}
           >
             ▾
@@ -68,6 +85,41 @@ export default function NavButton({
         )}
       </motion.div>
 
+      {/* ---- Expanded sidebar: children NAVBAR NI ANDAR j push-down thai ne khule (absolute nathi) ---- */}
+      {isOpen && hasChildren && (
+        <AnimatePresence initial={false}>
+          {expanded && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="relative z-10 overflow-hidden"
+            >
+              <div className="mt-1 ml-5 flex flex-col gap-1 border-l-2 border-green-600/30 py-1 pl-3">
+                {children!.map((child) => {
+                  const ChildIcon = child.icon;
+                  const childActive = activePath === child.path;
+                  return (
+                    <div
+                      key={child.path}
+                      onClick={() => onChildClick?.(child.path)}
+                      className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm cursor-pointer transition-colors
+                        ${childActive ? "bg-green-600 text-white font-medium" : "text-green-900/70 hover:bg-green-100"}
+                      `}
+                    >
+                      {ChildIcon && <ChildIcon size={16} className="shrink-0" />}
+                      <span className="truncate">{child.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
+
+      {/* ---- Collapsed sidebar: hover par floating flyout — juno j, badalyu nathi ---- */}
       <AnimatePresence>
         {!isOpen && hovered && (
           <motion.div

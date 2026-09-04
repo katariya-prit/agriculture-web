@@ -9,7 +9,6 @@ import RichTextarea from "../../components/commen/RichTextarea";
 import { createSaleListing } from "../../lib/salesApi";
 import Input from "../../components/commen/Input";
 import { FaUserTie } from "react-icons/fa";
-import { MdOpacity } from "react-icons/md";
 
 const MIN_IMAGES = 3;
 const MAX_IMAGES = 6;
@@ -21,21 +20,13 @@ const UNIT_OPTIONS = [
     { value: "ton", label: "Ton" },
     { value: "bag", label: "Bag" },
 ];
-const QUALITY_OPTIONS = [
-    { value: "premium", label: "Premium" },
-    { value: "grade-a", label: "Grade A" },
-    { value: "grade-b", label: "Grade B" },
-    { value: "standard", label: "Standard" },
-];
 
 interface SaleForm {
     cropName: string;
     variety: string;
-    quantity: string;
     unit: string;
     pricePerUnit: string;
     market: string;
-    quality: string;
     harvestDate: string;
     contactNumber: string;
     description: string;
@@ -44,11 +35,9 @@ interface SaleForm {
 const INITIAL_FORM: SaleForm = {
     cropName: "",
     variety: "",
-    quantity: "",
     unit: "quintal",
     pricePerUnit: "",
     market: "",
-    quality: "standard",
     harvestDate: "",
     contactNumber: "",
     description: "",
@@ -58,11 +47,9 @@ const INITIAL_FORM: SaleForm = {
 const FIELD_MAP: Record<keyof SaleForm, string> = {
     cropName: "crop_name",
     variety: "variety",
-    quantity: "quantity",
     unit: "unit",
-    pricePerUnit: "expected_price",
-    market: "market_apmc",
-    quality: "quality",
+    pricePerUnit: "price_per_unit",
+    market: "market",
     harvestDate: "harvest_date",
     contactNumber: "contact_number",
     description: "description",
@@ -107,7 +94,7 @@ export default function CreateSall() {
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
-        if (!form.cropName || !form.quantity || !form.pricePerUnit || !form.market || !form.contactNumber) {
+        if (!form.cropName || !form.market || !form.contactNumber) {
             toast.error("Badha jaruri (*) fields bharo.");
             return;
         }
@@ -135,9 +122,9 @@ export default function CreateSall() {
             toast.success("Listing safadtapurvak create thai gayi!");
             setForm(INITIAL_FORM);
             setImages([]);
-        } catch (err) {
+        } catch (err: any) {
             console.error("Create sale listing failed:", err);
-            toast.error("Listing create karva ma error aavi. Fari try karo.");
+            toast.error(err?.message || "Listing create karva ma error aavi. Fari try karo.");
         } finally {
             setSubmitting(false);
         }
@@ -185,22 +172,8 @@ export default function CreateSall() {
                     </div>
 
                     <div>
-                        <Input
-                            type="number"
-                            min={0}
-                            name="quantity"
-                            value={form.quantity}
-                            onChange={handleChange}
-                            placeholder="0"
-                            Icons={<MdOpacity />}
-                            label={"Quantity *"}
-                            ShowPassword={false}
-                        />
-                    </div>
-
-                    <div>
                         <Select
-                            label="Unit *"
+                            label="Unit"
                             options={UNIT_OPTIONS}
                             value={form.unit}
                             onChange={(val) => handleSelectChange("unit", val)}
@@ -217,18 +190,8 @@ export default function CreateSall() {
                             onChange={handleChange}
                             placeholder="0"
                             Icons={undefined}
-                            label={"Expected price / unit (₹) *"}
+                            label={"Expected price / unit (₹)"}
                             ShowPassword={false}
-                        />
-                    </div>
-
-                    <div>
-                        <Select
-                            label="Quality"
-                            options={QUALITY_OPTIONS}
-                            value={form.quality}
-                            onChange={(val) => handleSelectChange("quality", val)}
-                            searchPlaceholder="Quality search karo..."
                         />
                     </div>
 
@@ -340,7 +303,7 @@ export default function CreateSall() {
                         type="button"
                         disabled={images.length === 0}
                         onclick={clearImages}
-                        classname="px-4 py-2 text-sm bg-white text-gr   een-700! border border-green-600 hover:bg-green-50"
+                        classname="px-4 py-2 text-sm bg-white text-green-700! border border-green-600 hover:bg-green-50"
                     />
                 </div>
             </div>
