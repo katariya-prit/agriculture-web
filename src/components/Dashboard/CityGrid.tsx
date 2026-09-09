@@ -1,7 +1,7 @@
 // components/Dashboard/CityGrid.tsx
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getMarketRates, CITY_LIST, getMarketsForCity } from "../../../data/mockMarketData";
+import { getMarketRates, CITY_LIST, getMarketsForCity } from "../../services/market-service";
 import DashboardHeader from "./DashboardHeader";
 import CityCard from "./Citycard";
 import type { MandiRate } from "./types";
@@ -10,11 +10,18 @@ export default function CityGrid() {
     const [rates, setRates] = useState<MandiRate[]>([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
     const loadRates = async () => {
-        const data = await getMarketRates();
-        setRates(data);
+        try {
+            const data = await getMarketRates();
+            setRates(data);
+            setError(null);
+        } catch (err) {
+            setError("Market rates load nathi thai shakya. Fari try karo.");
+            console.error(err);
+        }
     };
 
     useEffect(() => {
@@ -45,6 +52,12 @@ export default function CityGrid() {
     return (
         <div className="flex h-full flex-col gap-5 overflow-y-auto p-1">
             <DashboardHeader refreshing={refreshing} onRefresh={() => void handleRefresh()} />
+
+            {error && (
+                <div className="rounded-lg bg-red-50 px-3 py-2 text-xs text-red-600">
+                    {error}
+                </div>
+            )}
 
             {loading ? (
                 <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-3 xl:grid-cols-4">

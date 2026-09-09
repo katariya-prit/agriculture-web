@@ -8,11 +8,14 @@ import PublicRoute from "./PublicRoute";
 import CreateSall from "../Section/sall-management/Create-sall";
 import MyProducts from "../Section/sall-management/MyProducts";
 import Products from "../Section/sall-management/Products";
+import ProductDetail from "../Section/sall-management/core/ProductDetail.tsx";
+import MyProductDetail from "../Section/sall-management/core/MyProductDetail.tsx";
 import CityGrid from "../components/Dashboard/CityGrid";
 import MarketList from "../components/Dashboard/MarketList";
 import MarketDetail from "../components/Dashboard/MarketDetail";
 import Profile from "../Section/Profile/Profile.tsx";
 import RequireSellingAccount from "../Section/Profile/RequireSellingAccount";
+import AiChatbot from "../Section/ai-managemant/ai-chatbot.tsx";
 
 export default function Router() {
   return (
@@ -48,6 +51,7 @@ export default function Router() {
         <Route path="profile" element={<Profile />} />
         <Route path="city/:city" element={<MarketList />} />
         <Route path="city/:city/:market" element={<MarketDetail />} />
+        <Route path="ai-assistant" element={<AiChatbot />} />
 
         <Route
           path="sall-product"
@@ -57,12 +61,23 @@ export default function Router() {
             </RequireSellingAccount>
           }
         />
+
         <Route path="products" element={<Products />} />
+        <Route path="products/:id" element={<ProductDetail />} />
+
         <Route
           path="my-product"
           element={
             <RequireSellingAccount>
               <MyProducts />
+            </RequireSellingAccount>
+          }
+        />
+        <Route
+          path="my-product/:id"
+          element={
+            <RequireSellingAccount>
+              <MyProductDetail />
             </RequireSellingAccount>
           }
         />

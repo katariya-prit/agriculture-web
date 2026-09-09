@@ -12,136 +12,143 @@ import { useFeedback } from "../../components/feedback/FeedbackProvider";
 type ViewMode = "card" | "table";
 
 export default function MyProducts() {
-  const [listings, setListings] = useState<SaleListing[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [view, setView] = useState<ViewMode>("card");
+    const [listings, setListings] = useState<SaleListing[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [search, setSearch] = useState("");
+    const [view, setView] = useState<ViewMode>("card");
 
-  async function fetchMyListings() {
-    setLoading(true);
-    try {
-      const data = await getMySaleListings();
-      setListings(data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
+    async function fetchMyListings() {
+        setLoading(true);
+        try {
+            const data = await getMySaleListings();
+            setListings(data);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
     }
-  }
 
-  useEffect(() => {
-    fetchMyListings();
-  }, []);
+    useEffect(() => {
+        fetchMyListings();
+    }, []);
 
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    if (!q) return listings;
-    return listings.filter((item) => item.cropName.toLowerCase().includes(q));
-  }, [listings, search]);
+    const filtered = useMemo(() => {
+        const q = search.trim().toLowerCase();
+        if (!q) return listings;
+        return listings.filter((item) => item.cropName.toLowerCase().includes(q));
+    }, [listings, search]);
 
-  const { confirm, success, error } = useFeedback();
+    const { confirm, success, error } = useFeedback();
 
-  async function handleDelete(id: string) {
-    const ok = await confirm({
-      message: "Aa listing delete karvi chhe?",
-      confirmLabel: "Delete karo",
-      danger: true,
-    });
-    if (!ok) return;
+    async function handleDelete(id: string) {
+        const ok = await confirm({
+            message: "Aa listing delete karvi chhe?",
+            confirmLabel: "Delete karo",
+            danger: true,
+        });
+        if (!ok) return;
 
-    try {
-      await deleteSaleListing(id);
-      setListings((prev) => prev.filter((l) => l.id !== id));
-      success("Listing delete thai gayu.");
-    } catch (err) {
-      console.error(err);
-      error("Delete karva ma error aavi.");
+        try {
+            await deleteSaleListing(id);
+            setListings((prev) => prev.filter((l) => l.id !== id));
+            success("Listing delete thai gayu.");
+        } catch (err) {
+            console.error(err);
+            error("Delete karva ma error aavi.");
+        }
     }
-  }
 
-  function handleEdit(listing: SaleListing) {
-    console.log("Edit:", listing);
-    // navigate to edit form
-  }
+    function handleEdit(listing: SaleListing) {
+        console.log("Edit:", listing);
+        // navigate to edit form
+    }
 
-  return (
-    <div className="min-h-full bg-[#f2f5f2] p-4 sm:p-6">
-      {/* Hero banner — mirrors the "Pak vechva mate list karo" header style */}
-      <div className="mb-6 flex items-center gap-4 rounded-2xl bg-gradient-to-r from-[#0b3d24] via-[#0f5132] to-[#15803d] px-6 py-5 text-white shadow-sm">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/15">
-          <Sprout className="h-5 w-5" />
+    // 👇 MyProducts na cards/rows have "/dashboard/my-product/:id" par navigate thashe
+    const getDetailPath = (listing: SaleListing) => `/dashboard/my-product/${listing.id}`;
+
+    return (
+        <div className="min-h-full bg-[#f2f5f2] p-4 sm:p-6">
+            <div className="mb-6 flex items-center gap-4 rounded-2xl bg-gradient-to-r from-[#0b3d24] via-[#0f5132] to-[#15803d] px-6 py-5 text-white shadow-sm">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/15">
+                    <Sprout className="h-5 w-5" />
+                </div>
+                <div>
+                    <h1 className="text-lg font-semibold leading-tight">Maru Listing</h1>
+                    <p className="text-sm text-emerald-100/80">
+                        Tame vechva mukela pak manage karo.
+                    </p>
+                </div>
+            </div>
+
+            <div className="rounded-2xl border border-emerald-900/10 bg-white p-5 shadow-sm sm:p-6">
+                <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <SearchBar value={search} onChange={setSearch} placeholder="Pak shodho..." />
+
+                    <div className="flex w-fit items-center gap-1 rounded-lg border border-emerald-900/10 bg-[#f2f5f2] p-1">
+                        <button
+                            type="button"
+                            onClick={() => setView("card")}
+                            aria-pressed={view === "card"}
+                            className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${view === "card"
+                                    ? "bg-[#0f5132] text-white shadow-sm"
+                                    : "text-emerald-900/50 hover:text-emerald-900/80"
+                                }`}
+                        >
+                            <LayoutGrid className="h-4 w-4" />
+                            Card
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setView("table")}
+                            aria-pressed={view === "table"}
+                            className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${view === "table"
+                                    ? "bg-[#0f5132] text-white shadow-sm"
+                                    : "text-emerald-900/50 hover:text-emerald-900/80"
+                                }`}
+                        >
+                            <TableIcon className="h-4 w-4" />
+                            Table
+                        </button>
+                    </div>
+                </div>
+
+                {loading ? (
+                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+                        {Array.from({ length: 4 }).map((_, i) => (
+                            <div key={i} className="animate-pulse">
+                                <div className="aspect-video rounded-xl bg-emerald-900/10" />
+                                <div className="mt-2 h-3 w-2/3 rounded bg-emerald-900/10" />
+                                <div className="mt-1.5 h-3 w-1/3 rounded bg-emerald-900/10" />
+                            </div>
+                        ))}
+                    </div>
+                ) : filtered.length === 0 ? (
+                    <NotFound
+                        title="Tame hajii koi pak list nathi karyu"
+                        message="Navu listing banavva mate 'List for sale' par jao."
+                    />
+                ) : view === "card" ? (
+                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+                        {filtered.map((listing) => (
+                            <ProductCard
+                                key={listing.id}
+                                listing={listing}
+                                onEdit={handleEdit}
+                                onDelete={handleDelete}
+                                getDetailPath={getDetailPath}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <ProductTable
+                        listings={filtered}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                        getDetailPath={getDetailPath}
+                    />
+                )}
+            </div>
         </div>
-        <div>
-          <h1 className="text-lg font-semibold leading-tight">Maru Listing</h1>
-          <p className="text-sm text-emerald-100/80">
-            Tame vechva mukela pak manage karo.
-          </p>
-        </div>
-      </div>
-
-      {/* Content card */}
-      <div className="rounded-2xl border border-emerald-900/10 bg-white p-5 shadow-sm sm:p-6">
-        <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <SearchBar value={search} onChange={setSearch} placeholder="Pak shodho..." />
-
-          <div className="flex w-fit items-center gap-1 rounded-lg border border-emerald-900/10 bg-[#f2f5f2] p-1">
-            <button
-              type="button"
-              onClick={() => setView("card")}
-              aria-pressed={view === "card"}
-              className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${view === "card"
-                  ? "bg-[#0f5132] text-white shadow-sm"
-                  : "text-emerald-900/50 hover:text-emerald-900/80"
-                }`}
-            >
-              <LayoutGrid className="h-4 w-4" />
-              Card
-            </button>
-            <button
-              type="button"
-              onClick={() => setView("table")}
-              aria-pressed={view === "table"}
-              className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${view === "table"
-                  ? "bg-[#0f5132] text-white shadow-sm"
-                  : "text-emerald-900/50 hover:text-emerald-900/80"
-                }`}
-            >
-              <TableIcon className="h-4 w-4" />
-              Table
-            </button>
-          </div>
-        </div>
-
-        {loading ? (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="animate-pulse">
-                <div className="aspect-video rounded-xl bg-emerald-900/10" />
-                <div className="mt-2 h-3 w-2/3 rounded bg-emerald-900/10" />
-                <div className="mt-1.5 h-3 w-1/3 rounded bg-emerald-900/10" />
-              </div>
-            ))}
-          </div>
-        ) : filtered.length === 0 ? (
-          <NotFound
-            title="Tame hajii koi pak list nathi karyu"
-            message="Navu listing banavva mate 'List for sale' par jao."
-          />
-        ) : view === "card" ? (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
-            {filtered.map((listing) => (
-              <ProductCard
-                key={listing.id}
-                listing={listing}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-              />
-            ))}
-          </div>
-        ) : (
-          <ProductTable listings={filtered} onEdit={handleEdit} onDelete={handleDelete} />
-        )}
-      </div>
-    </div>
-  );
+    );
 }

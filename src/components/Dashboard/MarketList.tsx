@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { getMarketRates, getMarketsForCity } from "../../../data/mockMarketData";
+import { getMarketRates, getMarketsForCity } from "../../services/market-service";
 import MarketCard from "./MarketCard";
 import type { MandiRate } from "./types";
 
@@ -11,13 +11,21 @@ export default function MarketList() {
     const navigate = useNavigate();
     const [rates, setRates] = useState<MandiRate[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         (async () => {
             setLoading(true);
-            const data = await getMarketRates();
-            setRates(data);
-            setLoading(false);
+            try {
+                const data = await getMarketRates();
+                setRates(data);
+                setError(null);
+            } catch (err) {
+                setError("Market data load nathi thai shakyu.");
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
         })();
     }, []);
 
@@ -49,6 +57,12 @@ export default function MarketList() {
                 <h1 className="mt-2 text-lg font-bold text-green-950 sm:text-xl">{city}</h1>
                 <p className="mt-0.5 text-xs text-gray-500">{city} na market pasand karo</p>
             </div>
+
+            {error && (
+                <div className="rounded-lg bg-red-50 px-3 py-2 text-xs text-red-600">
+                    {error}
+                </div>
+            )}
 
             {loading ? (
                 <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-3 xl:grid-cols-4">

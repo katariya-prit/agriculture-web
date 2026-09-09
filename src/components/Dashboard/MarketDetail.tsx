@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { getMarketRates, getPriceHistory } from "../../../data/mockMarketData";
+import { getMarketRates, getPriceHistory } from "../../services/market-service";
 import Graph from "./Graph";
 import ListOfPak from "./Listofpak";
 import CommentSection from "./Commentsection";
@@ -14,6 +14,7 @@ export default function MarketDetail() {
 
     const [rates, setRates] = useState<MandiRate[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [selectedCrop, setSelectedCrop] = useState<string | null>(null);
     const [sidebarSearch, setSidebarSearch] = useState("");
     const [history, setHistory] = useState<PriceHistoryPoint[]>([]);
@@ -22,9 +23,16 @@ export default function MarketDetail() {
     useEffect(() => {
         (async () => {
             setLoading(true);
-            const data = await getMarketRates();
-            setRates(data);
-            setLoading(false);
+            try {
+                const data = await getMarketRates();
+                setRates(data);
+                setError(null);
+            } catch (err) {
+                setError("Market data load nathi thai shakyu.");
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
         })();
     }, []);
 
@@ -44,9 +52,14 @@ export default function MarketDetail() {
         if (!selectedCrop) return;
         (async () => {
             setHistoryLoading(true);
-            const data = await getPriceHistory(selectedCrop);
-            setHistory(data);
-            setHistoryLoading(false);
+            try {
+                const data = await getPriceHistory(selectedCrop);
+                setHistory(data);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setHistoryLoading(false);
+            }
         })();
     }, [selectedCrop]);
 
@@ -71,6 +84,12 @@ export default function MarketDetail() {
                 <ArrowLeft className="h-3.5 w-3.5" />
                 {city} na Market
             </button>
+
+            {error && (
+                <div className="rounded-lg bg-red-50 px-3 py-2 text-xs text-red-600">
+                    {error}
+                </div>
+            )}
 
             {loading ? (
                 <div className="h-64 animate-pulse rounded-2xl bg-gray-100" />

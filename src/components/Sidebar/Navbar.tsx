@@ -4,7 +4,7 @@ import { MdDashboard } from "react-icons/md";
 import type { IconType } from "react-icons";
 import { SiSalla } from "react-icons/si";
 import { TbShoppingCart } from "react-icons/tb";
-import { LuBookUser, LuLock, LuPlus } from "react-icons/lu";
+import { LuBookUser, LuLock, LuPlus, LuBot } from "react-icons/lu";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "sonner";
 
@@ -23,6 +23,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
     { label: "Dashboard", icon: MdDashboard, path: "/dashboard" },
+    { label: "AI Sahayak", icon: LuBot, path: "/dashboard/ai-assistant" },
     {
         label: "Product Selling",
         icon: SiSalla,

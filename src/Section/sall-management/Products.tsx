@@ -7,7 +7,6 @@ import ProductCard from "../../components/cards/ProductCard";
 import ProductTable from "../../components/commen/Table";
 import NotFound from "../../components/feedback/NotFound";
 import SearchBar from "../../components/commen/SearchBar";
-import { toast } from "sonner";
 
 type ViewMode = "card" | "table";
 
@@ -45,7 +44,6 @@ export default function Products() {
 
     return (
         <div className="min-h-full bg-[#f2f5f2] p-4 sm:p-6">
-            {/* Hero banner — mirrors the MyProducts header style */}
             <div className="mb-6 flex items-center gap-4 rounded-2xl bg-linear-to-r from-[#0b3d24] via-[#0f5132] to-[#15803d] px-6 py-5 text-white shadow-sm">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/15">
                     <Store className="h-5 w-5" />
@@ -58,7 +56,6 @@ export default function Products() {
                 </div>
             </div>
 
-            {/* Content card */}
             <div className="rounded-2xl border border-emerald-900/10 bg-white p-5 shadow-sm sm:p-6">
                 <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <SearchBar value={search} onChange={setSearch} placeholder="Pak shodho..." />
@@ -110,11 +107,7 @@ export default function Products() {
                         ))}
                     </div>
                 ) : (
-                    <ProductTable
-                        listings={filtered}
-                        onEdit={() => toast.error("No Access")}
-                        onDelete={() => toast.error("No Access")}
-                    />
+                    <ProductTable listings={filtered} />
                 )}
             </div>
         </div>
