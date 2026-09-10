@@ -17,7 +17,7 @@ export default function AuthDropdown() {
                         onclick={undefined}
                         name={"Dashboard"}
                         Icon={<LayoutDashboard className="h-4 w-4" />}
-                        classname={`h-12 w-32 text-sm sm:w-40 sm:text-base`}
+                        classname={`h-12 w-32 text-sm sm:w-40 rounded-2xl sm:text-base`}
                         type={undefined}
                         disabled={false}
                     />
@@ -33,7 +33,7 @@ export default function AuthDropdown() {
                     onclick={undefined}
                     name={"Login"}
                     Icon={undefined}
-                    classname={`h-12 w-32 text-sm sm:w-36 sm:text-base`}
+                    classname={`h-12 w-32 text-sm sm:w-36 sm:text-base rounded-2xl`}
                     type={undefined}
                     disabled={false}
                 />
@@ -44,7 +44,7 @@ export default function AuthDropdown() {
                     onclick={undefined}
                     name={"Register"}
                     Icon={undefined}
-                    classname={`h-12 w-32 text-sm sm:w-36 sm:text-base text-green-700 border border-green-600 hover:bg-green-50`}
+                    classname={`h-12 w-32 text-sm sm:w-36 sm:text-base text-green-700 rounded-2xl border border-green-600 hover:bg-green-50`}
                     type={undefined}
                     disabled={false}
                 />

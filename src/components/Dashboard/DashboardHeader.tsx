@@ -12,7 +12,7 @@ export default function DashboardHeader({ refreshing, onRefresh }: Props) {
 
             <div>
                 <h1 className="text-lg font-bold text-green-950 sm:text-xl">
-                    Mandi Bhav Dashboard
+                    market View
                 </h1>
                 <p className="mt-0.5 text-xs text-gray-500">
                     Aajna market rates - khedut mate updated bhav

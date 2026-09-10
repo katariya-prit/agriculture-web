@@ -6,7 +6,7 @@ import Button from "../../components/commen/Button";
 import Select from "../../components/commen/Select";
 import DatePicker from "../../components/commen/DatePicker";
 import RichTextarea from "../../components/commen/RichTextarea";
-import { createSaleListing } from "../../lib/salesApi";
+import { productSalesService } from "../../services/productSalesService";
 import Input from "../../components/commen/Input";
 import { FaUserTie } from "react-icons/fa";
 
@@ -118,7 +118,7 @@ export default function CreateSall() {
 
         setSubmitting(true);
         try {
-            await createSaleListing(payload);
+            await productSalesService.create(payload);
             toast.success("Listing safadtapurvak create thai gayi!");
             setForm(INITIAL_FORM);
             setImages([]);

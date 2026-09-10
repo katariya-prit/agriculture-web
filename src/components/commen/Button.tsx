@@ -13,7 +13,7 @@ export default function Button({ name, Icon, classname, onclick, type, disabled 
             disabled={disabled}
             onClick={onclick}
             type={type}
-            className={`${classname} bg-green-700 hover:bg-green-800 text-white font-semibold rounded-2xl flex items-center justify-center gap-2 transition duration-200 shadow-md shadow-green-700/20 cursor-pointer`}
+            className={`${classname} bg-green-700 hover:bg-green-800 text-white font-semibold flex items-center justify-center gap-2 transition duration-200 shadow-md shadow-green-700/20 cursor-pointer`}
         >
             <span>
                 {Icon}

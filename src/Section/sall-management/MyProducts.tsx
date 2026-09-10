@@ -1,7 +1,7 @@
 // Section/sall-management/MyProducts.tsx
 import { useEffect, useMemo, useState } from "react";
 import { LayoutGrid, Table as TableIcon, Sprout } from "lucide-react";
-import { getMySaleListings, deleteSaleListing } from "../../lib/salesApi";
+import { productSalesService } from "../../services/productSalesService";
 import type { SaleListing } from "./core/types";
 import ProductCard from "../../components/cards/ProductCard";
 import ProductTable from "../../components/commen/Table";
@@ -20,8 +20,8 @@ export default function MyProducts() {
     async function fetchMyListings() {
         setLoading(true);
         try {
-            const data = await getMySaleListings();
-            setListings(data);
+            const data = await productSalesService.getMine<SaleListing[]>();
+            setListings(data ?? []);
         } catch (err) {
             console.error(err);
         } finally {
@@ -50,7 +50,7 @@ export default function MyProducts() {
         if (!ok) return;
 
         try {
-            await deleteSaleListing(id);
+            await productSalesService.delete(id);
             setListings((prev) => prev.filter((l) => l.id !== id));
             success("Listing delete thai gayu.");
         } catch (err) {

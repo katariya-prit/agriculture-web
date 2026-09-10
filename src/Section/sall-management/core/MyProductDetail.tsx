@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, MapPin, Phone, Calendar, Package, Pencil, Trash2 } from "lucide-react";
-import { getSaleListingById, deleteSaleListing } from "../../../lib/salesApi";
+import { productSalesService } from "../../../services/productSalesService";
 import type { SaleListing } from "../core/types";
 import { useFeedback } from "../../../components/feedback/FeedbackProvider";
 
@@ -20,8 +20,8 @@ export default function MyProductDetail() {
             if (!id) return;
             setLoading(true);
             try {
-                const data = await getSaleListingById(id);
-                setListing(data ?? null);
+                const data = await productSalesService.getById(id);
+                setListing((data as SaleListing) ?? null);
             } catch (err) {
                 console.error(err);
                 setListing(null);
@@ -41,7 +41,7 @@ export default function MyProductDetail() {
         if (!ok) return;
 
         try {
-            await deleteSaleListing(listing.id);
+            await productSalesService.delete(listing.id);
             success("Listing delete thai gayu.");
             navigate("/dashboard/my-product");
         } catch (err) {

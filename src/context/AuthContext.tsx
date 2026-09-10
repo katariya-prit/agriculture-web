@@ -1,14 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { api } from "../lib/api"; // path tamara project mujab adjust karo
-
-interface User {
-    id: string;
-    username: string;
-    fullName: string;
-    email: string;
-    isEmailVerified: boolean;
-    sellingAccountId: string | null;
-}
+import { authService, type User } from "../services/authService";
+import { setUnauthorizedHandler } from "../services/httpClient";
 
 interface AuthContextType {
     user: User | null;
@@ -26,11 +18,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Koi j module thi 401 aave (token expire/invalid), user apoap logged-out state ma aavi jaay
+        setUnauthorizedHandler(() => setUser(null));
+
         (async () => {
             try {
-                const data = await api.me();
-                const currentUser = data?.user ?? data ?? null;
-                console.log("Current user (me):", currentUser); // 👈 add karyu
+                const currentUser = await authService.me();
                 setUser(currentUser);
             } catch {
                 setUser(null);
@@ -41,25 +34,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     async function login(email: string, password: string) {
-        const data = await api.login({ email, password });
-        const loggedInUser = data?.user ?? data ?? null;
-        console.log("Logged in user:", loggedInUser);
+        const loggedInUser = await authService.login({ email, password });
         setUser(loggedInUser);
     }
 
     async function signup(username: string, fullName: string, email: string, password: string) {
-        const data = await api.signup({ username, fullName, email, password });
-        setUser(data?.user ?? data ?? null);
+        await authService.signup({ username, fullName, email, password });
+        // register email-verify pending rakhe chhe — token nathi aavto, etle user set nathi karvanu
     }
 
     async function verifyEmail(email: string, token: string) {
-        const data = await api.verifyEmail({ email, token });
+        await authService.verifyEmail({ email, token });
         setUser((prev) => (prev ? { ...prev, isEmailVerified: true } : prev));
-        return data;
     }
 
     async function logout() {
-        await api.logout();
+        await authService.logout();
         setUser(null);
     }
 

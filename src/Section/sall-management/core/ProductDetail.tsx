@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, MapPin, Phone, Calendar, Package } from "lucide-react";
-import { getSaleListingById } from "../../../lib/salesApi";
+import { productSalesService } from "../../../services/productSalesService";
 import type { SaleListing } from "./../core/types";
 
 export default function ProductDetail() {
@@ -18,8 +18,8 @@ export default function ProductDetail() {
             if (!id) return;
             setLoading(true);
             try {
-                const data = await getSaleListingById(id);
-                setListing(data ?? null);
+                const data = await productSalesService.getById(id);
+                setListing((data as SaleListing) ?? null);
             } catch (err) {
                 console.error(err);
                 setListing(null);

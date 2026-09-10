@@ -1,7 +1,7 @@
 // Section/sall-management/Products.tsx
 import { useEffect, useMemo, useState } from "react";
 import { LayoutGrid, Table as TableIcon, Store } from "lucide-react";
-import { getSaleListings } from "../../lib/salesApi";
+import { productSalesService } from "../../services/productSalesService";
 import type { SaleListing } from "./core/types";
 import ProductCard from "../../components/cards/ProductCard";
 import ProductTable from "../../components/commen/Table";
@@ -19,8 +19,8 @@ export default function Products() {
     async function fetchListings() {
         setLoading(true);
         try {
-            const data = await getSaleListings();
-            setListings(data);
+            const data = await productSalesService.getAll<SaleListing[]>();
+            setListings(data ?? []);
         } catch (err) {
             console.error(err);
         } finally {

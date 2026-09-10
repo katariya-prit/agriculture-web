@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { X, Store, User, MapPinned, Sprout, Check } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
-import { api } from "../../lib/api";
+import { sellingAccountService } from "../../services/sellingAccountService";
 import { toast } from "sonner";
 
 const theme = {
@@ -176,19 +176,19 @@ export default function SellingAccountModal({ open, onClose, onCreated, initial 
 
         setLoading(true);
         try {
-            const created = await api.createSellingAccount({
+            const created = await sellingAccountService.create({
                 sellingAccountName: form.sellingAccountName,
                 mobileNumber: form.mobileNumber,
                 shortAddress: form.shortAddress,
                 aadhaarNumber: form.aadhaarNumber,
             });
 
-            await api.updateBasicIdentity({
+            await sellingAccountService.updateBasicIdentity({
                 dateOfBirth: form.dateOfBirth || undefined,
                 gender: (form.gender || undefined) as "Male" | "Female" | "Other" | undefined,
             });
 
-            await api.updateFarmAndLandDetails({
+            await sellingAccountService.updateFarmAndLandDetails({
                 village: form.village,
                 taluka: form.taluka,
                 district: form.district,
@@ -197,7 +197,7 @@ export default function SellingAccountModal({ open, onClose, onCreated, initial 
                 surveyNumber: form.surveyNumber || undefined,
             });
 
-            const data = await api.updateCropAndProductionInfo({
+            const data = await sellingAccountService.updateCropAndProductionInfo({
                 primaryCrops: form.primaryCrops,
                 cropSeason: (form.cropSeason || undefined) as "Kharif" | "Rabi" | "Zaid" | undefined,
                 expectedYieldValue: form.expectedYieldValue ? Number(form.expectedYieldValue) : undefined,
@@ -207,7 +207,7 @@ export default function SellingAccountModal({ open, onClose, onCreated, initial 
             });
 
             toast.success("Selling account banai gayu!");
-            onCreated(data?.sellingAccount ?? data ?? created);
+            onCreated((data as any)?.sellingAccount ?? data ?? created);
             onClose();
         } catch (err: any) {
             const message =

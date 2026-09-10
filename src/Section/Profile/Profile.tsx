@@ -15,7 +15,7 @@ import {
     type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
-import { api } from "../../lib/api";
+import { sellingAccountService } from "../../services/sellingAccountService";
 import SellingAccountModal from "./SellingAccountModal";
 import { analyzeProfile, type ChecklistEntry } from "../../services/Profileanalysisservice";
 
@@ -51,6 +51,10 @@ interface SellingAccount {
     cropSeason?: string | null;
     farmingType?: string | null;
     soilType?: string | null;
+}
+
+interface GetSellingAccountResponse {
+    sellingAccount?: SellingAccount;
 }
 
 const CHECKLIST_META: Record<string, { icon: LucideIcon }> = {
@@ -152,8 +156,8 @@ export default function Profile() {
     async function fetchAccount() {
         setLoading(true);
         try {
-            const data = await api.getSellingAccount();
-            setAccount(data?.sellingAccount ?? data ?? null);
+            const data = await sellingAccountService.get<GetSellingAccountResponse>();
+            setAccount(data?.sellingAccount ?? null);
         } catch {
             setAccount(null); // 404 = account nathi, e normal chhe
         } finally {
