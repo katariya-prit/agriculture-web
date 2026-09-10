@@ -26,8 +26,6 @@ interface SignupPayload {
 
 export const authService = {
     async signup(payload: SignupPayload) {
-        // register email-verify pending rakhe chhe — token nathi aavto,
-        // etle localStorage ma kai set nathi karvanu
         return httpClient.post<{ message: string; user: User }>("/auth/signup", payload);
     },
 

@@ -9,7 +9,6 @@ export interface ApiError {
     [key: string]: unknown;
 }
 
-/** 401 aave tyare je call thay — e.g. AuthContext ne user null karva mate */
 let onUnauthorized: (() => void) | null = null;
 export function setUnauthorizedHandler(handler: () => void) {
     onUnauthorized = handler;
@@ -17,7 +16,7 @@ export function setUnauthorizedHandler(handler: () => void) {
 
 interface RequestOptions {
     method?: "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
-    body?: unknown; // plain object -> JSON.stringify thay, FormData -> as-is jaay
+    body?: unknown;
 }
 
 async function httpRequest<T = unknown>(path: string, options: RequestOptions = {}): Promise<T> {
@@ -29,8 +28,6 @@ async function httpRequest<T = unknown>(path: string, options: RequestOptions = 
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
     };
 
-    // FormData mate Content-Type manually set NA karo — browser potej
-    // multipart boundary sathe set kare chhe, nahi to upload tuti jaay.
     if (!isFormData) {
         headers["Content-Type"] = "application/json";
     }
@@ -49,7 +46,6 @@ async function httpRequest<T = unknown>(path: string, options: RequestOptions = 
     const data = await res.json().catch(() => null);
 
     if (res.status === 401) {
-        // Token invalid/expired — clean state, badha modules ne khabar padi jaay
         tokenService.clear();
         onUnauthorized?.();
     }

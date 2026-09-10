@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 const TOKEN_KEY = "auth_token";
 
 export const tokenService = {
@@ -13,6 +15,7 @@ export const tokenService = {
         try {
             localStorage.setItem(TOKEN_KEY, token);
         } catch {
+            toast.error("avalable token")
         }
     },
 
