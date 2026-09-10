@@ -1,6 +1,7 @@
-// components/ai-management/core/ImageUploader.tsx
 import { useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ImagePlus, X } from "lucide-react";
+import { useTheme } from "../../../components/theme/ThemeContext";
 
 interface Props {
     previewUrl: string | null;
@@ -9,6 +10,9 @@ interface Props {
 }
 
 export default function ImageUploader({ previewUrl, onImageSelect, onImageClear }: Props) {
+    const { theme } = useTheme();
+    const isdark = theme === "dark";
+
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,35 +23,58 @@ export default function ImageUploader({ previewUrl, onImageSelect, onImageClear 
         e.target.value = "";
     };
 
-    if (previewUrl) {
-        return (
-            <div className="relative w-fit">
-                <img
-                    src={previewUrl}
-                    alt="Selected crop"
-                    className="h-16 w-16 rounded-lg border border-green-200 object-cover"
-                />
-                <button
-                    type="button"
-                    onClick={onImageClear}
-                    className="absolute -right-1.5 -top-1.5 rounded-full bg-red-500 p-0.5 text-white hover:bg-red-600"
-                >
-                    <X className="h-3 w-3" />
-                </button>
-            </div>
-        );
-    }
-
     return (
         <>
-            <button
-                type="button"
-                onClick={() => inputRef.current?.click()}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-green-200 text-green-700 hover:bg-green-50"
-                title="Image upload karo"
-            >
-                <ImagePlus className="h-4.5 w-4.5" />
-            </button>
+            <AnimatePresence mode="wait">
+                {previewUrl ? (
+                    <motion.div
+                        key="preview"
+                        initial={{ opacity: 0, scale: 0.85 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.85 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        className="relative w-fit"
+                    >
+                        <img
+                            src={previewUrl}
+                            alt="Selected crop"
+                            className={`h-16 w-16 rounded-xl border object-cover shadow-sm ${
+                                isdark ? "border-gray-700" : "border-green-200"
+                            }`}
+                        />
+                        <motion.button
+                            type="button"
+                            whileTap={{ scale: 0.85 }}
+                            whileHover={{ scale: 1.1 }}
+                            onClick={onImageClear}
+                            className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white shadow-md hover:bg-red-600"
+                        >
+                            <X className="h-3 w-3" />
+                        </motion.button>
+                    </motion.div>
+                ) : (
+                    <motion.button
+                        key="upload-btn"
+                        type="button"
+                        initial={{ opacity: 0, scale: 0.85 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.85 }}
+                        whileTap={{ scale: 0.9 }}
+                        whileHover={{ scale: 1.06 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        onClick={() => inputRef.current?.click()}
+                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border transition-colors ${
+                            isdark
+                                ? "border-gray-700 text-green-400 hover:bg-gray-800"
+                                : "border-green-200 text-green-700 hover:bg-green-50"
+                        }`}
+                        title="Image upload karo"
+                    >
+                        <ImagePlus className="h-4.5 w-4.5" />
+                    </motion.button>
+                )}
+            </AnimatePresence>
+
             <input
                 ref={inputRef}
                 type="file"
