@@ -16,6 +16,7 @@ import MarketDetail from "../components/Dashboard/MarketDetail";
 import Profile from "../Section/Profile/Profile.tsx";
 import RequireSellingAccount from "../Section/Profile/RequireSellingAccount";
 import AiChatbot from "../Section/ai-managemant/ai-chatbot.tsx";
+import EmailVerification from "../Auth/Emailverification.tsx";
 
 export default function Router() {
   return (
@@ -38,6 +39,11 @@ export default function Router() {
           </PublicRoute>
         }
       />
+
+      {/* Email verify link (Brevo email ma thi aave) — login/signup jem PublicRoute
+          ma nathi rakhyu, kem ke logged-in user pan pota nu already-registered
+          bijo email verify karva mate aa link kholi shake */}
+      <Route path="/verify-email" element={<EmailVerification />} />
 
       <Route
         path="/dashboard"

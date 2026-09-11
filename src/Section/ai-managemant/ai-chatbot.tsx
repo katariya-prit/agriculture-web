@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { History, X, Bot } from "lucide-react";
+import { X } from "lucide-react";
 import ChatHistorySidebar from "./core/ChatHistorySidebar";
 import ChatMessageList from "./core/ChatMessageList";
 import ChatInput from "./core/ChatInput";

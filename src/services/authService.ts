@@ -30,7 +30,11 @@ export const authService = {
     },
 
     async verifyEmail(payload: { email: string; token: string }) {
-        return httpClient.post<{ message: string }>("/auth/verify-email", payload);
+        return httpClient.post<{ message: string; expired?: boolean }>("/auth/verify-email", payload);
+    },
+
+    async resendVerification(payload: { email: string }) {
+        return httpClient.post<{ message: string }>("/auth/resend-verification", payload);
     },
 
     async login(payload: { email: string; password: string }) {
