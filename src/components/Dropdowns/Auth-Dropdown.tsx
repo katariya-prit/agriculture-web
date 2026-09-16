@@ -27,7 +27,7 @@ export default function AuthDropdown() {
     }
 
     return (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 inset p-2 rounded-2xl ">
             <Link to="/login">
                 <Button
                     onclick={undefined}
@@ -44,7 +44,7 @@ export default function AuthDropdown() {
                     onclick={undefined}
                     name={"Register"}
                     Icon={undefined}
-                    classname={`h-12 w-32 text-sm sm:w-36 sm:text-base text-green-700 rounded-2xl border border-green-600 hover:bg-green-50`}
+                    classname={`h-12 w-32 text-sm sm:w-36 sm:text-base rounded-2xl`}
                     type={undefined}
                     disabled={false}
                 />

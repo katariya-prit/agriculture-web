@@ -2,20 +2,18 @@ import { useState } from "react";
 import {
     FiSun,
     FiShoppingCart,
-    FiActivity
+    FiActivity,
+    FiPhone
 } from "react-icons/fi";
 import { FaLeaf } from "react-icons/fa";
 import { IoIosLock } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/commen/Input";
+import Select, { type SelectOption } from "../components/commen/Select";
 import { MdOutlineMailLock } from "react-icons/md";
-import { FaRegUser } from "react-icons/fa6";
+import { FaRegUser, FaUserPlus, FaUserTag } from "react-icons/fa";
 import { PiPasswordFill } from "react-icons/pi";
 import Button from "../components/commen/Button";
-import { FaUserPlus, FaUserTag } from "react-icons/fa";
-import OtherAuth from "../components/commen/OtherAuth";
-import LoginFutter from "../components/commen/LoginFutter";
-import Header from "../components/commen/Header";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
 
@@ -23,12 +21,18 @@ export default function SignupPage() {
     const navigate = useNavigate();
     const { signup } = useAuth();
 
+    const [signupType, setSignupType] = useState("email");
     const [username, setUsername] = useState("");
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
+
+    const signupTypeOptions: SelectOption[] = [
+        { value: "email", label: "Email Address" },
+        { value: "phone", label: "Phone Number (Coming Soon)" },
+    ];
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -64,78 +68,90 @@ export default function SignupPage() {
     }
 
     return (
-        <div className="min-h-screen scroll select-none bg-slate-50 flex flex-col justify-between font-sans text-gray-800">
-            <Header />
-            <main className="flex-1 flex flex-col lg:flex-row items-center justify-center max-w-7xl w-full mx-auto p-4 md:p-8 gap-8">
-                <div className="lg:w-1/2 w-full relative hidden  rounded-5xl overflow-hidden min-h-137.5 lg:flex flex-col justify-between p-8 md:p-12">
-                    <div
-                        className="absolute inset-0 bg-cover bg-center select-none -z-10"
-                        style={{
-                            backgroundImage: `url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1600&auto=format&fit=crop')`
-                        }}
-                    >
-                        <div className="absolute inset-0 bg-linear-to-r from-white/95 via-white/85 to-transparent" />
-                    </div>
+        <div className="min-h-screen select-none bg-[#eef2f5] flex items-center justify-center font-sans text-gray-800 p-4 md:p-8">
+            <main className="flex flex-col lg:flex-row items-center justify-center max-w-6xl w-full mx-auto gap-8 lg:gap-16">
+
+                {/* Left Side Section - Text Only */}
+                <div className="lg:w-1/2 w-full hidden lg:flex flex-col justify-center p-6">
                     <div className="max-w-md select-none">
-                        <h2 className="text-3xl  md:text-4xl font-extrabold text-green-900 leading-tight mb-3">
+                        <h2 className="text-3xl md:text-4xl font-extrabold text-green-900 leading-tight mb-3">
                             Empowering Farmers, <br />
                             <span className="text-green-700">Enriching Future</span>
                         </h2>
                         <p className="text-gray-600 text-xs md:text-sm mb-8 leading-relaxed">
                             Agri Connect is your trusted partner for smarter farming, better yield, and sustainable future.
                         </p>
-                        <div className="space-y-4 select-none">
+
+                        <div className="space-y-6 select-none">
                             <div className="flex items-center gap-4">
-                                <div className="bg-green-700 text-white p-2.5 rounded-full shadow-md shrink-0">
-                                    <FaLeaf size={16} />
+                                <div className="bg-green-700 text-white p-3 rounded-full shadow-md shrink-0">
+                                    <FaLeaf size={18} />
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-gray-800 text-xs md:text-sm">Expert Advice</h4>
-                                    <p className="text-[11px] text-gray-600">Get expert crop recommendations and farming tips.</p>
+                                    <h4 className="font-bold text-gray-800 text-sm">Expert Advice</h4>
+                                    <p className="text-xs text-gray-600">Get expert crop recommendations and farming tips.</p>
                                 </div>
                             </div>
+
                             <div className="flex items-center gap-4">
-                                <div className="bg-green-700 text-white p-2.5 rounded-full shadow-md shrink-0">
-                                    <FiSun size={16} />
+                                <div className="bg-green-700 text-white p-3 rounded-full shadow-md shrink-0">
+                                    <FiSun size={18} />
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-gray-800 text-xs md:text-sm">Weather Updates</h4>
-                                    <p className="text-[11px] text-gray-600">Real-time weather forecasts and alerts.</p>
+                                    <h4 className="font-bold text-gray-800 text-sm">Weather Updates</h4>
+                                    <p className="text-xs text-gray-600">Real-time weather forecasts and alerts.</p>
                                 </div>
                             </div>
+
                             <div className="flex items-center gap-4">
-                                <div className="bg-green-700 text-white p-2.5 rounded-full shadow-md shrink-0">
-                                    <FiShoppingCart size={16} />
+                                <div className="bg-green-700 text-white p-3 rounded-full shadow-md shrink-0">
+                                    <FiShoppingCart size={18} />
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-gray-800 text-xs md:text-sm">Agri Marketplace</h4>
-                                    <p className="text-[11px] text-gray-600">Buy quality products and sell your produce.</p>
+                                    <h4 className="font-bold text-gray-800 text-sm">Agri Marketplace</h4>
+                                    <p className="text-xs text-gray-600">Buy quality products and sell your produce.</p>
                                 </div>
                             </div>
+
                             <div className="flex items-center gap-4">
-                                <div className="bg-green-700 text-white p-2.5 rounded-full shadow-md shrink-0">
-                                    <FiActivity size={16} />
+                                <div className="bg-green-700 text-white p-3 rounded-full shadow-md shrink-0">
+                                    <FiActivity size={18} />
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-gray-800 text-xs md:text-sm">Soil & Crop Health</h4>
-                                    <p className="text-[11px] text-gray-600">Check soil health and get best suggestions.</p>
+                                    <h4 className="font-bold text-gray-800 text-sm">Soil & Crop Health</h4>
+                                    <p className="text-xs text-gray-600">Check soil health and get best suggestions.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                {/* Right Side Signup Box with Neomorphism Theme */}
                 <div className="lg:w-120 w-full flex justify-center">
-                    <div className="bg-white border border-gray-100 rounded-[50px] p-6 md:p-8 shadow-xl w-full">
+                    <div className="bg-[#eef2f5] border border-white/60 rounded-[50px] p-8 shadow-[12px_12px_24px_#c5c9cc,-12px_-12px_24px_#ffffff] w-full">
 
                         <div className="text-center mb-6">
-                            <div className="inline-flex items-center justify-center gap-2 text-xl font-bold text-gray-800">
-                                <span className="bg-green-100 p-3 shadow-lg rounded-[20px] text-green-700 text-5xl"><IoIosLock /></span>
+                            <div className="inline-flex items-center justify-center text-green-700 bg-[#eef2f5] p-4 rounded-[24px] shadow-[inset_4px_4px_8px_#c5c9cc,inset_-4px_-4px_8px_#ffffff]">
+                                <IoIosLock size={40} />
                             </div>
                         </div>
 
-                        <form className="space-y-5 px-5" onSubmit={handleSubmit}>
-                            {/* Part 1: Username + Full Name */}
+                        <form className="space-y-5 px-2 md:px-4" onSubmit={handleSubmit}>
+                            {/* Select Dropdown (Phone Option Disabled) */}
+                            <Select
+                                label="Register With"
+                                options={signupTypeOptions}
+                                value={signupType}
+                                onChange={(val) => {
+                                    if (val === "phone") {
+                                        toast.info("Phone registration is coming soon! Please use Email.");
+                                        return;
+                                    }
+                                    setSignupType(val);
+                                }}
+                            />
+
+                            {/* Username + Full Name */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <Input
                                     Icons={<FaUserTag />}
@@ -160,19 +176,19 @@ export default function SignupPage() {
                                 />
                             </div>
 
-                            {/* Part 2: Email */}
+                            {/* Email / Phone Input */}
                             <Input
-                                Icons={<MdOutlineMailLock />}
-                                label={"Email"}
+                                Icons={signupType === "email" ? <MdOutlineMailLock /> : <FiPhone />}
+                                label={signupType === "email" ? "Email Address" : "Phone Number"}
                                 ShowPassword={false}
-                                type={"email"}
-                                placeholder={"Email"}
+                                type={signupType === "email" ? "email" : "tel"}
+                                placeholder={signupType === "email" ? "Enter Email" : "Enter Phone Number"}
                                 name="email"
                                 value={email}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                             />
 
-                            {/* Part 3: Password + Confirm Password */}
+                            {/* Password + Confirm Password */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <Input
                                     Icons={<PiPasswordFill />}
@@ -197,25 +213,17 @@ export default function SignupPage() {
                                 />
                             </div>
 
+                            {/* Submit Button */}
                             <Button
                                 type="submit"
                                 name={loading ? "Creating account..." : "Sign Up"}
                                 Icon={<FaUserPlus size={20} />}
-                                classname={`w-full h-13`}
+                                classname={`w-full h-13 mt-2`}
                                 disabled={loading}
                             />
                         </form>
 
-                        <div className="relative my-5 text-center">
-                            <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-gray-200"></div>
-                            </div>
-                            <span className="relative bg-white px-3 text-[11px] text-gray-400">or</span>
-                        </div>
-
-                        <OtherAuth />
-
-                        <p className="text-center text-xs text-gray-600">
+                        <p className="text-center text-xs text-gray-600 mt-6">
                             Already have an account?{" "}
                             <Link to={`/login`} className="font-bold text-green-700 hover:underline">
                                 Login
@@ -223,20 +231,8 @@ export default function SignupPage() {
                         </p>
                     </div>
                 </div>
+
             </main>
-
-            <LoginFutter />
-
-            <footer className="bg-[#0f281e] hidden text-white py-3.5 px-6 md:px-12 text-[11px] lg:flex flex-col sm:flex-row justify-between items-center gap-3">
-                <div className="text-gray-300">© 2025 Agri Connect. All rights reserved.</div>
-                <div className="flex gap-4 text-gray-300">
-                    <a href="#" className="hover:text-white transition">Privacy Policy</a>
-                    <span>|</span>
-                    <a href="#" className="hover:text-white transition">Terms & Conditions</a>
-                    <span>|</span>
-                    <a href="#" className="hover:text-white transition">Help Center</a>
-                </div>
-            </footer>
         </div>
     );
 }

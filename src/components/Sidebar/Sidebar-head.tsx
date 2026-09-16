@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import Logo from "../commen/Logo";
 import { VscLayoutSidebarLeftDock } from "react-icons/vsc";
 import { useTheme } from "../theme/ThemeContext";
@@ -24,10 +24,10 @@ export default function Sidebarhead({ isOpen, toggleSidebar }: Props) {
                 type="button"
                 onClick={toggleSidebar}
                 whileTap={{ scale: 0.92 }}
-                className={`shrink-0 w-11 h-11 rounded-xl border cursor-pointer flex justify-center items-center backdrop-blur-sm shadow-sm transition-all duration-200 ${
+                className={`shrink-0 w-11 h-11 rounded-2xl border cursor-pointer flex justify-center items-center transition-all duration-300 ${
                     isdark
-                        ? "border-gray-700 text-green-300 bg-gray-900/90 hover:bg-gray-800 hover:shadow-md hover:shadow-black/30"
-                        : "border-white/30 text-green-700 bg-white/90 hover:bg-white hover:shadow-md"
+                        ? "border-zinc-800 text-green-400 bg-[#272727] hover:bg-[#383838] active:bg-[#1f1f1f]"
+                        : "border-white/60 text-green-700 bg-[#eef2f5] shadow-[3px_3px_6px_#c5c9cc,-3px_-3px_6px_#ffffff] active:shadow-[inset_2px_2px_4px_#c5c9cc,inset_-2px_-2px_4px_#ffffff]"
                 } ${!isOpen ? "mx-auto" : ""}`}
             >
                 <motion.div animate={{ rotate: isOpen ? 0 : 180 }} transition={{ duration: 0.3 }}>

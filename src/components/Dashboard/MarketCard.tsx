@@ -1,6 +1,6 @@
-// components/Dashboard/MarketCard.tsx
 import { MapPin, Play } from "lucide-react";
 import type { MandiRate } from "./types";
+import { useTheme } from "../theme/ThemeContext";
 
 interface Props {
     market: string;
@@ -9,37 +9,76 @@ interface Props {
 }
 
 export default function MarketCard({ market, rates, onClick }: Props) {
+    const { theme } = useTheme();
+    const isDark = theme === "dark";
+
     const gainers = rates.filter((rate) => rate.trend === "up").length;
     const losers = rates.filter((rate) => rate.trend === "down").length;
     const topRate = [...rates].sort((a, b) => b.modalPrice - a.modalPrice)[0];
 
     return (
-        <button type="button" onClick={onClick} className="group text-left">
-            <div className="relative aspect-video overflow-hidden rounded-xl bg-linear-to-br from-green-100 to-emerald-50">
+        <button type="button" onClick={onClick} className="group text-left w-full select-none cursor-pointer">
+            <div
+                className={`relative aspect-video overflow-hidden rounded-2xl transition-all duration-300 ${
+                    isDark
+                        ? "bg-[#272727] border border-zinc-800 text-white shadow-lg group-hover:border-zinc-700"
+                        : "bg-linear-to-br from-green-100 to-emerald-50 border border-white/80 shadow-[4px_4px_10px_#c5c9cc,-4px_-4px_10px_#ffffff] group-hover:shadow-[6px_6px_12px_#c5c9cc,-6px_-6px_12px_#ffffff]"
+                }`}
+            >
                 <div className="flex h-full flex-col items-center justify-center gap-1.5">
-                    <MapPin className="h-8 w-8 text-green-600 opacity-70" />
-                    <span className="text-[11px] font-semibold text-green-700">
+                    <MapPin
+                        className={`h-7 w-7 transition-transform duration-300 group-hover:scale-110 ${
+                            isDark ? "text-green-400 opacity-90" : "text-green-600 opacity-80"
+                        }`}
+                    />
+                    <span
+                        className={`text-[11px] font-bold ${
+                            isDark ? "text-green-300" : "text-green-800"
+                        }`}
+                    >
                         {rates.length} pak tracked
                     </span>
                 </div>
 
-                <span className="absolute bottom-1.5 right-1.5 rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                <span
+                    className={`absolute bottom-2 right-2 rounded-md px-1.5 py-0.5 text-[10px] font-bold ${
+                        isDark
+                            ? "bg-black/70 text-gray-200 border border-zinc-700"
+                            : "bg-black/75 text-white"
+                    }`}
+                >
                     {gainers} up · {losers} down
                 </span>
 
-                <div className="absolute inset-0 hidden items-center justify-center bg-black/20 group-hover:flex">
-                    <Play className="h-8 w-8 fill-white text-white" />
+                <div className="absolute inset-0 hidden items-center justify-center bg-black/25 backdrop-blur-[1px] group-hover:flex transition-all">
+                    <Play className="h-8 w-8 fill-white text-white drop-shadow-md" />
                 </div>
             </div>
 
-            <div className="mt-2">
-                <p className="truncate text-sm font-bold text-green-950">{market}</p>
+            <div className="mt-2.5 px-0.5">
+                <p
+                    className={`truncate text-sm font-bold ${
+                        isDark ? "text-gray-100" : "text-gray-900"
+                    }`}
+                >
+                    {market}
+                </p>
                 {topRate ? (
-                    <p className="truncate text-[11px] text-gray-400">
+                    <p
+                        className={`truncate text-[11px] font-medium ${
+                            isDark ? "text-gray-400" : "text-gray-500"
+                        }`}
+                    >
                         Top: {topRate.crop} · ₹{topRate.modalPrice.toLocaleString("en-IN")}
                     </p>
                 ) : (
-                    <p className="truncate text-[11px] text-gray-400">Koi data nathi</p>
+                    <p
+                        className={`truncate text-[11px] ${
+                            isDark ? "text-gray-500" : "text-gray-400"
+                        }`}
+                    >
+                        Koi data nathi
+                    </p>
                 )}
             </div>
         </button>

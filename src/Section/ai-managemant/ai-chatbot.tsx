@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { X } from "lucide-react";
+import { X, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import ChatHistorySidebar from "./core/ChatHistorySidebar";
 import ChatMessageList from "./core/ChatMessageList";
 import ChatInput from "./core/ChatInput";
 import { sendChatMessage, analyzeCropWithGemini } from "../../services/ai-service";
 import type { SupportedLanguage } from "../../services/ai-service";
 import type { ChatMessage, ChatSession } from "./core/types";
-import { useTheme } from "../../components/theme/ThemeContext"
+import { useTheme } from "../../components/theme/ThemeContext";
 
 function generateId() {
     return `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
@@ -23,6 +24,8 @@ export default function AiChatbot() {
     const [language, setLanguage] = useState<SupportedLanguage>("gu");
 
     const activeSession = sessions.find((s) => s.id === activeSessionId) ?? null;
+    const messages = activeSession?.messages ?? [];
+    const hasMessages = messages.length > 0;
 
     const handleNewChat = () => {
         const newSession: ChatSession = { id: generateId(), title: "Navi Chat", messages: [], createdAt: new Date().toISOString() };
@@ -104,16 +107,78 @@ export default function AiChatbot() {
 
     return (
         <div className={`relative flex h-full overflow-hidden rounded-2xl border ${isdark ? "border-gray-800 bg-gray-950" : "border-green-100 bg-white"}`}>
-            <div className="flex min-w-0 flex-1 flex-col">
+            
+            {/* Main Chat Area */}
+            <div className="flex min-w-0 flex-1 flex-col relative h-full">
+                
+                {/* 1. Chat Message List (જ્યારે મેસેજ હોય ત્યારે જ દેખાશે) */}
+                {hasMessages ? (
+                    <div className="flex-1 overflow-y-auto">
+                        <ChatMessageList messages={messages} loading={loading} />
+                    </div>
+                ) : (
+                    /* 2. Welcome State (સેન્ટરમાં રાખવા માટે Spacer) */
+                    <div className="flex-1" />
+                )}
 
-                <ChatMessageList messages={activeSession?.messages ?? []} loading={loading} />
-                <ChatInput onSend={handleSend} loading={loading} language={language} onLanguageChange={setLanguage} />
+                {/* 3. Dynamic Animated Input Box Container */}
+                <motion.div
+                    layout
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    className={`w-full flex flex-col items-center transition-all duration-300 ${
+                        hasMessages
+                            ? "p-4 border-t border-black/5 dark:border-white/10"
+                            : "justify-center p-6 pb-20"
+                    }`}
+                >
+                    {/* Welcome Header (જો મેસેજ ના હોય ત્યારે જ દેખાશે) */}
+                    <AnimatePresence>
+                        {!hasMessages && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                className="mb-6 text-center max-w-lg"
+                            >
+                                <div className={`mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl ${
+                                    isdark ? "bg-emerald-500/10 text-emerald-400" : "bg-emerald-100 text-emerald-700"
+                                }`}>
+                                    <Sparkles className="h-6 w-6" />
+                                </div>
+                                <h2 className={`text-2xl font-bold ${isdark ? "text-gray-100" : "text-gray-800"}`}>
+                                    કેમ છો, ખેડૂત મિત્ર! 👋
+                                </h2>
+                                <p className={`text-xs sm:text-sm mt-1.5 ${isdark ? "text-gray-400" : "text-gray-500"}`}>
+                                    પાકના રોગ, ખાતર અથવા ખેતી વિશે કંઈપણ પૂછો અથવા ફોટો અપલોડ કરો.
+                                </p>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    {/* Chat Input Bar */}
+                    <div className="w-full max-w-3xl">
+                        <ChatInput 
+                            onSend={handleSend} 
+                            loading={loading} 
+                            language={language} 
+                            onLanguageChange={setLanguage} 
+                        />
+                    </div>
+                </motion.div>
             </div>
 
+            {/* Sidebar Desktop */}
             <div className="hidden lg:block">
-                <ChatHistorySidebar sessions={sessions} activeSessionId={activeSessionId} onSelectSession={handleSelectSession} onNewChat={handleNewChat} onDeleteSession={handleDeleteSession} />
+                <ChatHistorySidebar 
+                    sessions={sessions} 
+                    activeSessionId={activeSessionId} 
+                    onSelectSession={handleSelectSession} 
+                    onNewChat={handleNewChat} 
+                    onDeleteSession={handleDeleteSession} 
+                />
             </div>
 
+            {/* Mobile Sidebar Modal */}
             {isHistoryOpen && (
                 <div className="absolute inset-0 z-20 flex lg:hidden">
                     <div className="flex-1 bg-black/30" onClick={() => setIsHistoryOpen(false)} />
@@ -127,7 +192,13 @@ export default function AiChatbot() {
                         >
                             <X className="h-4 w-4" />
                         </button>
-                        <ChatHistorySidebar sessions={sessions} activeSessionId={activeSessionId} onSelectSession={handleSelectSession} onNewChat={handleNewChat} onDeleteSession={handleDeleteSession} />
+                        <ChatHistorySidebar 
+                            sessions={sessions} 
+                            activeSessionId={activeSessionId} 
+                            onSelectSession={handleSelectSession} 
+                            onNewChat={handleNewChat} 
+                            onDeleteSession={handleDeleteSession} 
+                        />
                     </div>
                 </div>
             )}

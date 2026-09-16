@@ -13,51 +13,13 @@ export default function InteractiveBackground() {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    const gridSize = 50;
-    const cols = Math.ceil(width / gridSize) + 2;
-    const rows = Math.ceil(height / gridSize) + 2;
+    const gridSize = 55;
 
-    interface Point {
-      x: number;
-      y: number;
-      originX: number;
-      originY: number;
-      vx: number;
-      vy: number;
-    }
-
-    let points: Point[][] = [];
-
-    const initGrid = () => {
-      points = [];
-      for (let r = 0; r < rows; r++) {
-        const rowPoints: Point[] = [];
-        for (let c = 0; c < cols; c++) {
-          const x = c * gridSize;
-          const y = r * gridSize;
-          rowPoints.push({ x, y, originX: x, originY: y, vx: 0, vy: 0 });
-        }
-        points.push(rowPoints);
-      }
-    };
-
-    initGrid();
-
-    let mouse = { x: -1000, y: -1000, isDown: false, dragStartX: 0, dragStartY: 0 };
-
-    interface Ripple {
-      x: number;
-      y: number;
-      radius: number;
-      maxRadius: number;
-      alpha: number;
-    }
-    let ripples: Ripple[] = [];
+    let mouse = { x: -1000, y: -1000 };
 
     const handleResize = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
-      initGrid();
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -65,157 +27,112 @@ export default function InteractiveBackground() {
       mouse.y = e.clientY;
     };
 
-    const handleMouseDown = (e: MouseEvent) => {
-      mouse.isDown = true;
-      mouse.dragStartX = e.clientX;
-      mouse.dragStartY = e.clientY;
-    };
-
-    const handleMouseUp = (e: MouseEvent) => {
-      if (mouse.isDown) {
-        mouse.isDown = false;
-        ripples.push({
-          x: e.clientX,
-          y: e.clientY,
-          radius: 0,
-          maxRadius: 280,
-          alpha: 1,
-        });
-      }
+    const handleMouseLeave = () => {
+      mouse.x = -1000;
+      mouse.y = -1000;
     };
 
     window.addEventListener("resize", handleResize);
     window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mouseup", handleMouseUp);
-
-    const spring = 0.08;
-    const damping = 0.82;
-    const pullRadius = 220;
+    window.addEventListener("mouseleave", handleMouseLeave);
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // White Base Fill
-      ctx.fillStyle = "#ffffff";
+      // Neomorphism Base Fill
+      ctx.fillStyle = "#eef2f5";
       ctx.fillRect(0, 0, width, height);
 
-      const dragDX = mouse.isDown ? mouse.x - mouse.dragStartX : 0;
-      const dragDY = mouse.isDown ? mouse.y - mouse.dragStartY : 0;
+      // 1. Draw Fixed Perfect Straight Grid Lines
+      const cols = Math.ceil(width / gridSize);
+      const rows = Math.ceil(height / gridSize);
 
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const pt = points[r][c];
-          const dx = mouse.x - pt.originX;
-          const dy = mouse.y - pt.originY;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          let targetX = pt.originX;
-          let targetY = pt.originY;
-
-          if (mouse.isDown && dist < pullRadius) {
-            const factor = Math.pow(1 - dist / pullRadius, 2);
-            targetX += dragDX * factor * 0.6;
-            targetY += dragDY * factor * 0.6;
-          }
-
-          const forceX = (targetX - pt.x) * spring;
-          const forceY = (targetY - pt.y) * spring;
-
-          pt.vx = (pt.vx + forceX) * damping;
-          pt.vy = (pt.vy + forceY) * damping;
-
-          pt.x += pt.vx;
-          pt.y += pt.vy;
-        }
+      // Vertical Lines
+      for (let c = 0; c <= cols; c++) {
+        const x = c * gridSize;
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.strokeStyle = "rgba(163, 177, 198, 0.25)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
       }
 
-      ctx.lineWidth = 1;
-
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const pt = points[r][c];
-
-          if (c < cols - 1) {
-            const rightPt = points[r][c + 1];
-            ctx.beginPath();
-            ctx.moveTo(pt.x, pt.y);
-            ctx.lineTo(rightPt.x, rightPt.y);
-
-            const midX = (pt.x + rightPt.x) / 2;
-            const midY = (pt.y + rightPt.y) / 2;
-            const distToMouse = Math.hypot(mouse.x - midX, mouse.y - midY);
-
-            if (distToMouse < 220) {
-              const alpha = 0.3 + (1 - distToMouse / 220) * 0.7;
-              ctx.strokeStyle = `rgba(16, 185, 129, ${alpha})`;
-              ctx.lineWidth = 1.8;
-            } else {
-              ctx.strokeStyle = "rgba(16, 185, 129, 0.15)";
-              ctx.lineWidth = 1;
-            }
-            ctx.stroke();
-          }
-
-          if (r < rows - 1) {
-            const bottomPt = points[r + 1][c];
-            ctx.beginPath();
-            ctx.moveTo(pt.x, pt.y);
-            ctx.lineTo(bottomPt.x, bottomPt.y);
-
-            const midX = (pt.x + bottomPt.x) / 2;
-            const midY = (pt.y + bottomPt.y) / 2;
-            const distToMouse = Math.hypot(mouse.x - midX, mouse.y - midY);
-
-            if (distToMouse < 220) {
-              const alpha = 0.3 + (1 - distToMouse / 220) * 0.7;
-              ctx.strokeStyle = `rgba(16, 185, 129, ${alpha})`;
-              ctx.lineWidth = 1.8;
-            } else {
-              ctx.strokeStyle = "rgba(16, 185, 129, 0.15)";
-              ctx.lineWidth = 1;
-            }
-            ctx.stroke();
-          }
-        }
+      // Horizontal Lines
+      for (let r = 0; r <= rows; r++) {
+        const y = r * gridSize;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.strokeStyle = "rgba(163, 177, 198, 0.25)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
       }
 
-      // Mouse Glow
+      // 2. Mouse Highlight Effect (Highlight nearby lines smoothly without distorting)
       if (mouse.x > 0 && mouse.y > 0) {
+        const highlightRadius = 200;
+
+        // Highlight Vertical Lines Near Mouse
+        const startCol = Math.max(0, Math.floor((mouse.x - highlightRadius) / gridSize));
+        const endCol = Math.min(cols, Math.ceil((mouse.x + highlightRadius) / gridSize));
+
+        for (let c = startCol; c <= endCol; c++) {
+          const x = c * gridSize;
+          const dist = Math.abs(mouse.x - x);
+
+          if (dist < highlightRadius) {
+            const alpha = (1 - dist / highlightRadius) * 0.5;
+            const startY = Math.max(0, mouse.y - highlightRadius);
+            const endY = Math.min(height, mouse.y + highlightRadius);
+
+            ctx.beginPath();
+            ctx.moveTo(x, startY);
+            ctx.lineTo(x, endY);
+            ctx.strokeStyle = `rgba(16, 185, 129, ${alpha})`;
+            ctx.lineWidth = 1.8;
+            ctx.stroke();
+          }
+        }
+
+        // Highlight Horizontal Lines Near Mouse
+        const startRow = Math.max(0, Math.floor((mouse.y - highlightRadius) / gridSize));
+        const endRow = Math.min(rows, Math.ceil((mouse.y + highlightRadius) / gridSize));
+
+        for (let r = startRow; r <= endRow; r++) {
+          const y = r * gridSize;
+          const dist = Math.abs(mouse.y - y);
+
+          if (dist < highlightRadius) {
+            const alpha = (1 - dist / highlightRadius) * 0.5;
+            const startX = Math.max(0, mouse.x - highlightRadius);
+            const endX = Math.min(width, mouse.x + highlightRadius);
+
+            ctx.beginPath();
+            ctx.moveTo(startX, y);
+            ctx.lineTo(endX, y);
+            ctx.strokeStyle = `rgba(16, 185, 129, ${alpha})`;
+            ctx.lineWidth = 1.8;
+            ctx.stroke();
+          }
+        }
+
+        // Soft Radial Glow
         const glowGradient = ctx.createRadialGradient(
           mouse.x,
           mouse.y,
           0,
           mouse.x,
           mouse.y,
-          200
+          highlightRadius
         );
-        glowGradient.addColorStop(0, "rgba(16, 185, 129, 0.15)");
+        glowGradient.addColorStop(0, "rgba(16, 185, 129, 0.1)");
         glowGradient.addColorStop(1, "rgba(16, 185, 129, 0)");
 
         ctx.fillStyle = glowGradient;
         ctx.beginPath();
-        ctx.arc(mouse.x, mouse.y, 200, 0, Math.PI * 2);
+        ctx.arc(mouse.x, mouse.y, highlightRadius, 0, Math.PI * 2);
         ctx.fill();
-      }
-
-      for (let i = ripples.length - 1; i >= 0; i--) {
-        const r = ripples[i];
-        r.radius += 4;
-        r.alpha -= 0.015;
-
-        if (r.alpha <= 0 || r.radius >= r.maxRadius) {
-          ripples.splice(i, 1);
-          continue;
-        }
-
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(r.x, r.y, r.radius, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(16, 185, 129, ${r.alpha * 0.8})`;
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        ctx.restore();
       }
 
       animationFrameId = requestAnimationFrame(render);
@@ -227,15 +144,14 @@ export default function InteractiveBackground() {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("mouseleave", handleMouseLeave);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0 w-screen h-screen bg-white"
+      className="fixed inset-0 pointer-events-none z-0 w-screen h-screen bg-[#eef2f5]"
     />
   );
 }

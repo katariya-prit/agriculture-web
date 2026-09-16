@@ -1,12 +1,14 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import NavButton, { type NavChildItem } from "./NavButton";
-import { MdDashboard } from "react-icons/md";
+import { MdCalendarMonth, MdDashboard, MdStar, MdWbCloudy } from "react-icons/md";
 import type { IconType } from "react-icons";
 import { SiSalla } from "react-icons/si";
 import { TbShoppingCart } from "react-icons/tb";
 import { LuBookUser, LuLock, LuPlus, LuBot } from "react-icons/lu";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "sonner";
+import { useTheme } from "../theme/ThemeContext";
+import { Truck } from "lucide-react";
 
 interface Props {
     isOpen: boolean;
@@ -35,12 +37,26 @@ const navItems: NavItem[] = [
         ],
     },
     { label: "Product", icon: TbShoppingCart, path: "/dashboard/products" },
+    {
+        label: "Transparent",
+        icon: Truck,
+        path: "/dashboard/transparent",
+        children: [
+            { label: "Transport", path: "/dashboard/transparent", icon: Truck },
+        ],
+    },
+    { label: "Weather", icon: MdWbCloudy, path: "/dashboard/weather" },
+    { label: "Schemes", icon: MdCalendarMonth, path: "/dashboard/schemes" },
+    { label: "Ratings", icon: MdStar, path: "/dashboard/ratings" },
 ];
 
 export default function Navbar({ isOpen, onNavigate }: Props) {
     const navigate = useNavigate();
     const location = useLocation();
     const { user } = useAuth();
+    const { theme } = useTheme();
+    const isdark = theme === "dark";
+
     const hasSellingAccount = Boolean(user?.sellingAccountId);
 
     const goTo = (path: string, requiresSellingAccount?: boolean) => {
@@ -58,13 +74,18 @@ export default function Navbar({ isOpen, onNavigate }: Props) {
     };
 
     return (
-        <div className="w-full h-auto flex flex-col gap-2 p-0.2">
+        <div className="w-full h-auto flex flex-col gap-2 p-1">
             {navItems.map((item) => {
                 const locked = item.requiresSellingAccount && !hasSellingAccount;
-                const isChildActive = item.children?.some((c) => c.path === location.pathname) ?? false;
+                const isChildActive =
+                    item.children?.some((c) => c.path === location.pathname) ?? false;
 
                 return (
-                    <div key={item.path} className={locked ? "opacity-50 cursor-not-allowed" : ""}>
+                    <div
+                        key={item.path}
+                        className={`transition-opacity duration-200 ${locked ? "opacity-50 cursor-not-allowed" : ""
+                            }`}
+                    >
                         <NavButton
                             icon={locked ? LuLock : item.icon}
                             label={item.label}
@@ -80,4 +101,4 @@ export default function Navbar({ isOpen, onNavigate }: Props) {
             })}
         </div>
     );
-}
+}   

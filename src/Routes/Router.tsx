@@ -17,6 +17,10 @@ import Profile from "../Section/Profile/Profile.tsx";
 import RequireSellingAccount from "../Section/Profile/RequireSellingAccount";
 import AiChatbot from "../Section/ai-managemant/ai-chatbot.tsx";
 import EmailVerification from "../Auth/Emailverification.tsx";
+import Transparent from "../Section/Transparent/Transparent.tsx";
+import Weather from "../Section/Weather/Weather.tsx";
+import Schemes from "../Section/schemes/Schemes.tsx";
+import Ratings from "../Section/Ratings/Ratings.tsx";
 
 export default function Router() {
   return (
@@ -87,6 +91,11 @@ export default function Router() {
             </RequireSellingAccount>
           }
         />
+
+        <Route path="transparent" element={<Transparent />} />
+        <Route path="weather" element={<Weather />} />
+        <Route path="schemes" element={<Schemes />} />
+        <Route path="ratings" element={<Ratings />} />
       </Route>
     </Routes>
   );

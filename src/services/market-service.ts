@@ -26,7 +26,9 @@ export interface PriceHistoryPoint {
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3333";
 
 export async function getMarketRates(): Promise<MandiRate[]> {
-    const response = await fetch(`${API_BASE_URL}/api/market-rates`);
+    const response = await fetch(`${API_BASE_URL}/api/market-rates`, {
+        credentials: "include",
+    });
     if (!response.ok) throw new Error(`Failed to fetch market rates: ${response.status}`);
     const json = await response.json();
     return json.data as MandiRate[];
@@ -34,7 +36,8 @@ export async function getMarketRates(): Promise<MandiRate[]> {
 
 export async function getPriceHistory(crop: string): Promise<PriceHistoryPoint[]> {
     const response = await fetch(
-        `${API_BASE_URL}/api/price-history?crop=${encodeURIComponent(crop)}`
+        `${API_BASE_URL}/api/price-history?crop=${encodeURIComponent(crop)}`,
+        { credentials: "include" }
     );
     if (!response.ok) throw new Error(`Failed to fetch price history: ${response.status}`);
     const json = await response.json();

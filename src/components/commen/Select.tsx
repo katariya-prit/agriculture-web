@@ -18,11 +18,11 @@ interface SelectProps {
 
 export default function Select({
     label,
-    placeholder = "Select karo",
+    placeholder = "Select option",
     options,
     value,
     onChange,
-    searchPlaceholder = "Search karo...",
+    searchPlaceholder = "Search...",
     disabled = false,
 }: SelectProps) {
     const [open, setOpen] = useState(false);
@@ -59,52 +59,65 @@ export default function Select({
     }
 
     return (
-        <div ref={wrapperRef} className="relative">
-            {label && <label className="block text-xs font-semibold text-gray-700 mb-1">{label}</label>}
+        <div ref={wrapperRef} className="relative w-full select-none">
+            {label && (
+                <label className="block text-xs font-semibold text-gray-700 mb-2">
+                    {label}
+                </label>
+            )}
 
+            {/* Neomorphism Styled Select Button */}
             <button
                 type="button"
                 disabled={disabled}
                 onClick={() => setOpen((prev) => !prev)}
-                className={`w-full flex items-center justify-between px-4 py-3.5 text-[15px] border border-gray-200 rounded-[15px] bg-white text-left hover:shadow-lg duration-300 focus:outline-none focus:ring-2 focus:ring-green-600/20 focus:border-green-600 ${
-                    disabled ? "opacity-50 cursor-not-allowed" : ""
+                className={`w-full flex items-center justify-between px-5 py-3.5 text-sm border border-white/60 rounded-[20px] bg-[#eef2f5] text-left transition-all duration-300 shadow-[inset_3px_3px_6px_#c5c9cc,inset_-3px_-3px_6px_#ffffff] focus:outline-none focus:ring-2 focus:ring-green-600/30 ${
+                    disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
                 }`}
             >
-                <span className={selected ? "text-gray-800" : "text-gray-400"}>
+                <span className={selected ? "text-gray-800 font-medium" : "text-gray-400"}>
                     {selected ? selected.label : placeholder}
                 </span>
                 <FiChevronDown
-                    className={`text-gray-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+                    className={`text-gray-500 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
                     size={18}
                 />
             </button>
 
+            {/* Neomorphism Styled Dropdown Menu */}
             {open && (
-                <div className="absolute z-20 mt-2 w-full bg-white border border-gray-200 rounded-[15px] shadow-xl overflow-hidden">
-                    <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-100">
-                        <FiSearch className="text-gray-400" size={16} />
+                <div className="absolute z-50 mt-3 w-full bg-[#eef2f5] border border-white/80 rounded-[24px] shadow-[8px_8px_16px_#c5c9cc,-8px_-8px_16px_#ffffff] overflow-hidden p-2">
+                    
+                    {/* Search Field */}
+                    <div className="flex items-center gap-2 px-3 py-2 bg-[#eef2f5] border border-white/60 rounded-[15px] shadow-[inset_2px_2px_4px_#c5c9cc,inset_-2px_-2px_4px_#ffffff] mb-2">
+                        <FiSearch className="text-gray-400 shrink-0" size={16} />
                         <input
                             ref={searchRef}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder={searchPlaceholder}
-                            className="w-full text-sm outline-none text-gray-700 placeholder:text-gray-400"
+                            className="w-full text-xs outline-none bg-transparent text-gray-700 placeholder:text-gray-400"
                         />
                     </div>
 
-                    <div className="max-h-56 overflow-y-auto">
+                    {/* Options List */}
+                    <div className="max-h-48 overflow-y-auto space-y-1">
                         {filtered.length === 0 && (
-                            <p className="px-4 py-3 text-sm text-gray-400">Koi option nathi madyu</p>
+                            <p className="px-4 py-3 text-xs text-gray-400 text-center">No options found</p>
                         )}
                         {filtered.map((option) => (
                             <button
                                 key={option.value}
                                 type="button"
                                 onClick={() => handleSelect(option.value)}
-                                className="w-full flex items-center justify-between px-4 py-2.5 text-sm text-left text-gray-700 hover:bg-green-50"
+                                className={`w-full flex items-center justify-between px-4 py-2.5 text-xs rounded-[12px] text-left transition-all duration-200 ${
+                                    option.value === value
+                                        ? "bg-green-700 text-white shadow-md font-semibold"
+                                        : "text-gray-700 hover:bg-[#e2e7ec]"
+                                }`}
                             >
                                 {option.label}
-                                {option.value === value && <FiCheck className="text-green-600" size={16} />}
+                                {option.value === value && <FiCheck className="text-white shrink-0" size={16} />}
                             </button>
                         ))}
                     </div>
