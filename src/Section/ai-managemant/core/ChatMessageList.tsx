@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Leaf, AlertTriangle, CheckCircle2, Bot, User, ShieldCheck, Sprout, Bug, Stethoscope, X, Percent } from "lucide-react";
+import { Leaf, AlertTriangle, CheckCircle2, Bot, User, ShieldCheck, Sprout, Bug, Stethoscope, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { ChatMessage } from "./types";
 import type { GeminiCropAnalysis } from "../../../services/ai-service";

@@ -76,11 +76,6 @@ const fpoGroups: FpoGroup[] = [
     },
 ];
 
-const fpoAccentStyles: Record<"emerald" | "amber", string> = {
-    emerald: "bg-emerald-100 text-emerald-700",
-    amber: "bg-amber-100 text-amber-700",
-};
-
 export default function Schemes() {
     const { theme } = useTheme();
     const isdark = theme === "dark";

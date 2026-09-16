@@ -7,7 +7,6 @@ import { TbShoppingCart } from "react-icons/tb";
 import { LuBookUser, LuLock, LuPlus, LuBot } from "react-icons/lu";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "sonner";
-import { useTheme } from "../theme/ThemeContext";
 import { Truck } from "lucide-react";
 
 interface Props {
@@ -54,8 +53,6 @@ export default function Navbar({ isOpen, onNavigate }: Props) {
     const navigate = useNavigate();
     const location = useLocation();
     const { user } = useAuth();
-    const { theme } = useTheme();
-    const isdark = theme === "dark";
 
     const hasSellingAccount = Boolean(user?.sellingAccountId);
 
