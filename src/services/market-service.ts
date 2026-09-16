@@ -22,7 +22,7 @@ export interface PriceHistoryPoint {
     price: number;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3333";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3333";
 
 export async function getMarketRates(): Promise<MandiRate[]> {
     const response = await fetch(`${API_BASE_URL}/api/market-rates`, {
