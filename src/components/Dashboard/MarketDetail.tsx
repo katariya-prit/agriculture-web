@@ -78,7 +78,6 @@ export default function MarketDetail() {
 
     return (
         <div className="flex h-full flex-col gap-5 overflow-y-auto p-2 md:p-4 select-none">
-            {/* Back Button */}
             <button
                 type="button"
                 onClick={() => navigate(`/dashboard/city/${encodeURIComponent(city!)}`)}

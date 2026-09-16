@@ -15,9 +15,7 @@ export default function Header({ isOpen, toggleSidebar }: Props) {
 
     return (
         <header className="w-full flex items-center justify-between gap-3 select-none">
-            {/* Left Section: Sidebar Toggle & Animated Branding */}
             <div className="flex items-center gap-3">
-                {/* Mobile Menu Button */}
                 {!isOpen && (
                     <motion.button
                         whileTap={{ scale: 0.92 }}
@@ -33,7 +31,6 @@ export default function Header({ isOpen, toggleSidebar }: Props) {
                     </motion.button>
                 )}
 
-                {/* SVG Grass Illustration Animation */}
                 <div className="relative hidden sm:flex items-center h-12 md:h-14 pointer-events-none">
                     <svg
                         width="90"
@@ -84,7 +81,6 @@ export default function Header({ isOpen, toggleSidebar }: Props) {
                 </div>
             </div>
 
-            {/* Right Section: Controls */}
             <div className="flex items-center gap-3">
                 <ThemeToggle />
                 <ProfileMenu />

@@ -5,7 +5,6 @@ import InteractiveBackground from "../../components/commen/InteractiveBackground
 import Scroll3DCanvas from "../../components/commen/Scroll3DCanvas";
 import Button from "../../components/commen/Button";
 
-/* React Icons Implemented */
 import {
     FiBook,
     FiSmartphone,
@@ -17,7 +16,6 @@ import {
     FiGlobe
 } from "react-icons/fi";
 
-/* Soft UI / Neomorphism Panel Component */
 function GlassPanel({
     children,
     className = "",
@@ -34,7 +32,6 @@ function GlassPanel({
     );
 }
 
-/* Soft UI Pill Component */
 function Pill({ children }: { children: React.ReactNode }) {
     return (
         <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold tracking-wider text-emerald-800 bg-[#eef2f5] shadow-[inset_3px_3px_6px_rgba(163,177,198,0.4),inset_-3px_-3px_6px_rgba(255,255,255,0.8)] uppercase transition-all duration-500 ease-out">
@@ -44,7 +41,6 @@ function Pill({ children }: { children: React.ReactNode }) {
     );
 }
 
-/* Soft UI Primary Button */
 function PrimaryButton({
     href,
     children,
@@ -62,7 +58,6 @@ function PrimaryButton({
     );
 }
 
-/* Soft UI Ghost Button */
 function GhostButton({
     href,
     children,
@@ -83,12 +78,10 @@ function GhostButton({
 export default function Overview() {
     return (
         <div className="relative min-h-screen bg-[#eef2f5] text-slate-700 overflow-x-hidden font-sans w-full">
-            {/* Interactive Grid Background Canvas */}
             <InteractiveBackground />
 
             <Scroll3DCanvas />
 
-            {/* Soft Floating Header */}
             <header className="fixed top-0 z-50 bg-[#eef2f5]/90 backdrop-blur-md shadow-[0_8px_16px_rgba(163,177,198,0.3)] w-full transition-all duration-500 ease-out">
                 <div className="max-w-full mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
                     <Logo />
@@ -110,9 +103,7 @@ export default function Overview() {
                 </div>
             </header>
 
-            {/* MAIN CONTENT */}
             <main className="relative z-20 max-w-full mx-auto px-6 md:px-12 py-12 mt-20 space-y-32 w-full">
-                {/* HERO SECTION */}
                 <section id="home" className="pt-6 w-full">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
                         <GlassPanel className="lg:col-span-7 space-y-8">
@@ -162,7 +153,6 @@ export default function Overview() {
                     </div>
                 </section>
 
-                {/* ABOUT SECTION */}
                 <section id="aboutus" className="w-full">
                     <GlassPanel className="max-w-3xl">
                         <div className="space-y-6">
@@ -194,7 +184,6 @@ export default function Overview() {
                     </GlassPanel>
                 </section>
 
-                {/* SERVICES SECTION */}
                 <section id="services" className="flex justify-end w-full">
                     <GlassPanel className="max-w-3xl space-y-8">
                         <div className="space-y-3">
@@ -218,7 +207,6 @@ export default function Overview() {
                     </GlassPanel>
                 </section>
 
-                {/* MARKETPLACE SECTION */}
                 <section id="marketplace" className="w-full">
                     <GlassPanel className="max-w-3xl space-y-6">
                         <Pill>AGRI MARKETPLACE</Pill>
@@ -229,7 +217,6 @@ export default function Overview() {
                     </GlassPanel>
                 </section>
 
-                {/* CTA & FOOTER SECTION */}
                 <section id="contactus" className="space-y-12 w-full">
                     <GlassPanel className="text-center max-w-2xl mx-auto space-y-6">
                         <div className="inline-flex p-4 rounded-3xl bg-[#eef2f5] shadow-[inset_4px_4px_8px_rgba(163,177,198,0.4),inset_-4px_-4px_8px_rgba(255,255,255,0.8)] text-emerald-600 text-4xl">

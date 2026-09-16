@@ -21,7 +21,6 @@ export default function TopMovers({ rates, selectedCrop, onSelectCrop }: Props) 
 
     return (
         <div className="select-none">
-            {/* Header */}
             <div className="mb-2.5 flex items-center gap-1.5 px-0.5">
                 <Flame className="h-4 w-4 text-orange-500 animate-pulse" />
                 <p
@@ -33,7 +32,6 @@ export default function TopMovers({ rates, selectedCrop, onSelectCrop }: Props) 
                 </p>
             </div>
 
-            {/* Grid Container */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 {top3.map((rate, index) => {
                     const trendConfig = {
@@ -72,7 +70,6 @@ export default function TopMovers({ rates, selectedCrop, onSelectCrop }: Props) 
                                     : "bg-[#eef2f5] border border-white/80 shadow-[3px_3px_6px_#c5c9cc,-3px_-3px_6px_#ffffff] hover:bg-green-50/30"
                             }`}
                         >
-                            {/* Rank Number */}
                             <span
                                 className={`absolute right-3 top-2 text-2xl font-black ${
                                     isDark ? "text-zinc-800" : "text-gray-200/80"
@@ -81,7 +78,6 @@ export default function TopMovers({ rates, selectedCrop, onSelectCrop }: Props) 
                                 #{index + 1}
                             </span>
 
-                            {/* Crop & Details */}
                             <p
                                 className={`truncate pr-8 text-sm font-bold ${
                                     isDark ? "text-gray-100" : "text-gray-900"
@@ -97,7 +93,6 @@ export default function TopMovers({ rates, selectedCrop, onSelectCrop }: Props) 
                                 {rate.variety} · {rate.market}
                             </p>
 
-                            {/* Price & Trend Badge */}
                             <div className="mt-3 flex items-end justify-between">
                                 <p
                                     className={`text-xl font-extrabold ${

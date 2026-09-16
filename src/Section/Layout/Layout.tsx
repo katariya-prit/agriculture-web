@@ -17,7 +17,6 @@ export default function Layout() {
 
             <div className={`flex flex-col w-full h-full min-w-0 transition-colors duration-300 ${isdark ? 'bg-[#0f0f0f] text-white' : 'bg-[#eef2f5] text-gray-900'}`}>
 
-                {/* Header Section */}
                 <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -28,7 +27,6 @@ export default function Layout() {
                     <Header isOpen={isOpen} toggleSidebar={() => setIsOpen(!isOpen)} />
                 </motion.div>
 
-                {/* Main Content Card */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}

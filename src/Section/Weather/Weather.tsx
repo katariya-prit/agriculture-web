@@ -61,7 +61,6 @@ export default function Weather() {
     const TodayIcon = conditionIcon[today.condition];
     const maxRainfall = Math.max(...rainfallHistory.map((m) => m.mm));
 
-    // ---- Neumorphic tokens (theme-aware, same as other pages) ----
     const bg = isdark ? "bg-[#272727]" : "bg-[#eef2f5]";
     const raised = isdark
         ? "shadow-[6px_6px_14px_#1c1c1c,-6px_-6px_14px_#323232]"
@@ -85,7 +84,6 @@ export default function Weather() {
 
     return (
         <div className={`min-h-full ${bg} p-4 sm:p-6 transition-colors duration-300`}>
-            {/* Header */}
             <div className={`mb-6 flex items-center gap-4 rounded-[28px] ${bg} ${raised} px-6 py-5 transition-all duration-300`}>
                 <div className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-[20px] ${bg} ${raisedSm}`}>
                     <Cloud className={`h-6 w-6 ${isdark ? "text-sky-400" : "text-sky-600"}`} />
@@ -105,7 +103,6 @@ export default function Weather() {
             </div>
 
             <div className="flex flex-col gap-4">
-                {/* 5-day forecast */}
                 <div className={`rounded-[28px] ${bg} ${raised} p-5 sm:p-6 transition-all duration-300`}>
                     <h2 className={`mb-4 text-sm font-semibold ${textPrimary}`}>5-day forecast</h2>
 
@@ -145,7 +142,6 @@ export default function Weather() {
                     </div>
                 </div>
 
-                {/* Sowing calendar */}
                 <div className={`rounded-[28px] ${bg} ${raised} p-5 sm:p-6 transition-all duration-300`}>
                     <h2 className={`mb-4 text-sm font-semibold ${textPrimary}`}>AI sowing calendar — Wheat</h2>
 
@@ -173,7 +169,6 @@ export default function Weather() {
                     </div>
                 </div>
 
-                {/* Rainfall chart */}
                 <div className={`rounded-[28px] ${bg} ${raised} p-5 sm:p-6 transition-all duration-300`}>
                     <h2 className={`mb-4 text-sm font-semibold ${textPrimary}`}>Rainfall last 6 months</h2>
 

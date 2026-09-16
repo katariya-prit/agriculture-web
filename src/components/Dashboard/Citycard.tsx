@@ -20,7 +20,6 @@ export default function CityCard({ city, marketCount, rates, onClick }: Props) {
     return (
         <button type="button" onClick={onClick} className="group text-left w-full select-none">
             <div className="relative aspect-video w-full">
-                {/* Back layers for card effect */}
                 <div
                     className={`absolute inset-x-2.5 -bottom-2 top-3 rounded-xl transition-transform group-hover:translate-y-0.5 ${
                         isDark ? "bg-green-950/40 border border-green-800/30" : "bg-emerald-200/50"
@@ -32,7 +31,6 @@ export default function CityCard({ city, marketCount, rates, onClick }: Props) {
                     }`}
                 />
 
-                {/* Main Card Container */}
                 <div
                     className={`relative flex h-full flex-col items-center justify-center gap-1.5 overflow-hidden rounded-xl transition-transform group-hover:-translate-y-0.5 ${
                         isDark

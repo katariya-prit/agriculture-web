@@ -74,7 +74,6 @@ export default function Ratings() {
     const isdark = theme === "dark";
     const maxCount = Math.max(...breakdown.map((b) => b.count), 1);
 
-    // ---- Neumorphic tokens (theme-aware, same as Transport/Schemes pages) ----
     const bg = isdark ? "bg-[#272727]" : "bg-[#eef2f5]";
     const raised = isdark
         ? "shadow-[6px_6px_14px_#1c1c1c,-6px_-6px_14px_#323232]"
@@ -106,7 +105,6 @@ export default function Ratings() {
 
     return (
         <div className={`min-h-full ${bg} p-4 sm:p-6 transition-colors duration-300`}>
-            {/* Header */}
             <div className={`mb-6 flex items-center gap-4 rounded-[28px] ${bg} ${raised} px-6 py-5 transition-all duration-300`}>
                 <div className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-[20px] ${bg} ${raisedSm}`}>
                     <Star className={`h-6 w-6 ${isdark ? "text-amber-400" : "text-amber-500"}`} />
@@ -126,7 +124,6 @@ export default function Ratings() {
             </div>
 
             <div className="flex flex-col gap-4">
-                {/* Seller score */}
                 <div className={`rounded-[28px] ${bg} ${raised} p-5 sm:p-6 transition-all duration-300`}>
                     <h2 className={`mb-4 text-sm font-semibold ${textPrimary}`}>Your seller score</h2>
 
@@ -174,7 +171,6 @@ export default function Ratings() {
                     </div>
                 </div>
 
-                {/* Reviews */}
                 <div className={`rounded-[28px] ${bg} ${raised} p-5 sm:p-6 transition-all duration-300`}>
                     <h2 className={`mb-4 text-sm font-semibold ${textPrimary}`}>Reviews from buyers</h2>
 

@@ -1,4 +1,3 @@
-// services/market-service.ts
 
 export type Trend = "up" | "down" | "stable";
 
@@ -43,10 +42,6 @@ export async function getPriceHistory(crop: string): Promise<PriceHistoryPoint[]
     const json = await response.json();
     return json.data as PriceHistoryPoint[];
 }
-
-// --- Reference data (markets/cities) ---
-// Jo aa backend thi dynamic aavvu hoy to niche wala 2 ne bhi
-// fetch(`${API_BASE_URL}/api/markets`) thi replace kari shakay.
 
 const MARKETS: { market: string; district: string; state: string }[] = [
     { market: "Ahmedabad APMC", district: "Ahmedabad", state: "Gujarat" },

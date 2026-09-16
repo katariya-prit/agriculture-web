@@ -7,36 +7,27 @@ export default function Scroll3DCanvas() {
     useEffect(() => {
         const container = mountRef.current;
         if (!container) return;
+        const GRASS_COUNT = 3800;
+        const BLADE_HEIGHT = 2.15;
+        const BASE_WIDTH = 0.055;
+        const GRASS_Y_POS = -4.2;
+        const SPREAD_X = 18;
+        const SPREAD_Z = 3.6;
+        const WIND_SPEED = 0.0008;
+        const WIND_SWAY = 0.15;
 
-        // =========================================================
-        // 🎛️ CONTROLLERS (તમારા કંટ્રોલર્સ)
-        // =========================================================
-        const GRASS_COUNT = 3800;   // 🌿 ઘાસની સંખ્યા
-        const BLADE_HEIGHT = 2.15;  // 📏 ઘાસની ઊંચાઈ
-        const BASE_WIDTH = 0.055;   // 📐 ઘાસની પાયાની પહોળાઈ
-        const GRASS_Y_POS = -4.2;   // 📍 ઘાસનું સ્થાન (Y-Pos)
-        const SPREAD_X = 18;        // ↔️ ફેલાવો (Width Spread)
-        const SPREAD_Z = 3.6;       // ↗️ ઊંડાઈ (Depth Spread)
-        const WIND_SPEED = 0.0008;  // 🌬️ પવનની સ્પીડ
-        const WIND_SWAY = 0.15;     // 🌾 પવનની લહેર
+        const MOUSE_PUSH_RADIUS = 2.0;
+        const MOUSE_PRESS_FORCE = 0.65;
+        const SMOOTH_RETURN_SPEED = 1;
 
-        // 🖱️ MOUSE INTERACTION & PRESS CONTROLLERS (માઉસથી દબાવવાની ઇફેક્ટ)
-        const MOUSE_PUSH_RADIUS = 2.0;    // 🎯 માઉસની અસરનું રેડિયસ
-        const MOUSE_PRESS_FORCE = 0.65;    // 🔽 માઉસ નીચે આવે ત્યારે ઘાસ કેટલું દબાશે (Press Down)
-        const SMOOTH_RETURN_SPEED = 1;  // 🌊 સ્મૂથ પાછા આવવાની સ્પીડ
-
-        // 🎨 COLOR GRADING CONTROLLERS (ગ્રેડિયન્ટ કલર સેટિંગ્સ)
         const GRASS_COLORS = {
-            root: "#1D8211", // 🎨 ડાર્ક મૂળ/થડનો કલર (Dark Root)
-            mid: "#045409", // 🎨 વચ્ચેનો પાંદડાનો કલર (Natural Green)
-            tip: "#4B9E0D", // 🎨 અણી/ટોચનો કલર (Tip Green)
+            root: "#1D8211",
+            mid: "#045409",
+            tip: "#4B9E0D",
         };
-        // =========================================================
 
-        // 1. Scene Setup
         const scene = new THREE.Scene();
 
-        // 2. Camera Setup
         const camera = new THREE.PerspectiveCamera(
             45,
             window.innerWidth / window.innerHeight,
@@ -45,7 +36,6 @@ export default function Scroll3DCanvas() {
         );
         camera.position.set(0, 0, 10);
 
-        // 3. Renderer Setup
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -59,15 +49,13 @@ export default function Scroll3DCanvas() {
 
         container.appendChild(renderer.domElement);
 
-        // 4. Natural Lighting Setup
         const ambientLight = new THREE.AmbientLight(0xffffff, 2.4);
         scene.add(ambientLight);
 
-        const sunLight = new THREE.DirectionalLight(0xfef08a, 3.8); // Warm Sunlight
+        const sunLight = new THREE.DirectionalLight(0xfef08a, 3.8);
         sunLight.position.set(6, 12, 6);
         scene.add(sunLight);
 
-        // ☀️ 5. SUN RAYS EFFECT (સૂર્યના કિરણો)
         const sunRaysGroup = new THREE.Group();
         const rayGeo = new THREE.PlaneGeometry(0.85, 15);
         const rayMat = new THREE.MeshBasicMaterial({
@@ -87,9 +75,7 @@ export default function Scroll3DCanvas() {
         }
         scene.add(sunRaysGroup);
 
-        // 🌿 6. CUSTOM GRADIENT & POINTED GRASS BLADE GEOMETRY
         const bladePositions = new Float32Array([
-            // Bottom Base
             -BASE_WIDTH, 0.0, 0.0,
             BASE_WIDTH, 0.0, 0.0,
             -BASE_WIDTH * 0.6, BLADE_HEIGHT * 0.45, 0.08,
@@ -98,19 +84,16 @@ export default function Scroll3DCanvas() {
             BASE_WIDTH * 0.6, BLADE_HEIGHT * 0.45, 0.08,
             -BASE_WIDTH * 0.6, BLADE_HEIGHT * 0.45, 0.08,
 
-            // Top Pointed Tip (૧ અણી)
             -BASE_WIDTH * 0.6, BLADE_HEIGHT * 0.45, 0.08,
             BASE_WIDTH * 0.6, BLADE_HEIGHT * 0.45, 0.08,
             0.0, BLADE_HEIGHT, 0.22,
         ]);
 
-        // 🎨 Dynamic Linear Gradient Assignment
         const rootCol = new THREE.Color(GRASS_COLORS.root);
         const midCol = new THREE.Color(GRASS_COLORS.mid);
         const tipCol = new THREE.Color(GRASS_COLORS.tip);
 
         const bladeColors = new Float32Array([
-            // Bottom Base Vertices
             rootCol.r, rootCol.g, rootCol.b,
             rootCol.r, rootCol.g, rootCol.b,
             midCol.r, midCol.g, midCol.b,
@@ -119,7 +102,6 @@ export default function Scroll3DCanvas() {
             midCol.r, midCol.g, midCol.b,
             midCol.r, midCol.g, midCol.b,
 
-            // Top Vertices (Gradient to Tip)
             midCol.r, midCol.g, midCol.b,
             midCol.r, midCol.g, midCol.b,
             tipCol.r, tipCol.g, tipCol.b,
@@ -137,7 +119,7 @@ export default function Scroll3DCanvas() {
         bladeGeo.computeVertexNormals();
 
         const grassMat = new THREE.MeshStandardMaterial({
-            vertexColors: true, // Gradient Active
+            vertexColors: true,
             roughness: 0.35,
             metalness: 0.02,
             side: THREE.DoubleSide,
@@ -154,7 +136,7 @@ export default function Scroll3DCanvas() {
             rotY: number;
             scaleY: number;
             curveTilt: number;
-            currentPress: number; // 🔽 દબાણ માપવા માટેનું વેરિયેબલ
+            currentPress: number;
             currentBendX: number;
             currentBendZ: number;
         }[] = [];
@@ -177,7 +159,6 @@ export default function Scroll3DCanvas() {
             });
         }
 
-        // 🖱️ 7. MOUSE CURSOR POSITION IN 3D SPACE
         const mouse3D = new THREE.Vector3(-999, -999, 0);
         const raycaster = new THREE.Raycaster();
         const mouse2D = new THREE.Vector2(-1, -1);
@@ -205,7 +186,6 @@ export default function Scroll3DCanvas() {
         };
         window.addEventListener("resize", handleResize);
 
-        // 8. Animation Loop
         let animId: number;
 
         const animate = () => {
@@ -217,10 +197,8 @@ export default function Scroll3DCanvas() {
                 const item = grassTransforms[i];
                 const { x, z, rotY, scaleY, curveTilt } = item;
 
-                // 🌾 પવન સાથે કુદરતી હલન-ચલન
                 const windSway = Math.sin(time * 2.2 + x * 1.6) * WIND_SWAY + curveTilt;
 
-                // 🖱️ માઉસ કર્સર અને ઘાસનું અંતર
                 const dx = x - mouse3D.x;
                 const dz = z - mouse3D.z;
                 const dist = Math.sqrt(dx * dx + dz * dz);
@@ -229,29 +207,25 @@ export default function Scroll3DCanvas() {
                 let targetPushX = 0;
                 let targetPushZ = 0;
 
-                // જો માઉસ નજીક આવે તો ઘાસ દબાવવું (Press down & slight tilt away)
                 if (dist < MOUSE_PUSH_RADIUS && dist > 0.01) {
                     const factor = (1 - dist / MOUSE_PUSH_RADIUS);
-                    targetPress = factor * MOUSE_PRESS_FORCE; // નીચે તરફ દબાવવું
-                    targetPushX = (dx / dist) * factor * 0.2;  // સાઇડમાં હળવું ખસવું
+                    targetPress = factor * MOUSE_PRESS_FORCE;
+                    targetPushX = (dx / dist) * factor * 0.2;
                     targetPushZ = (dz / dist) * factor * 0.2;
                 }
 
-                // 🌊 સ્મૂથ સ્પ્રિંગ ઇફેક્ટ (Smooth Transition)
                 item.currentPress += (targetPress - item.currentPress) * SMOOTH_RETURN_SPEED;
                 item.currentBendX += (targetPushX - item.currentBendX) * SMOOTH_RETURN_SPEED;
                 item.currentBendZ += (targetPushZ - item.currentBendZ) * SMOOTH_RETURN_SPEED;
 
                 dummy.position.set(x, 0, z);
 
-                // પવન + માઉસના દબાણથી ઘાસની ઊંચાઈ ઘટે અને બેન્ડ થાય (Press/Flatten effect)
                 dummy.rotation.set(
                     windSway - item.currentBendZ + item.currentPress * 0.8,
                     rotY + windSway * 0.3,
                     windSway + item.currentBendX
                 );
 
-                // માઉસ આવે ત્યારે ઊંચાઈ થોડી ઓછી થઈને દબાયેલી અનુભવાય
                 dummy.scale.set(1, Math.max(0.4, scaleY - item.currentPress * 0.6), 1);
 
                 dummy.updateMatrix();
@@ -260,7 +234,6 @@ export default function Scroll3DCanvas() {
 
             grassMesh.instanceMatrix.needsUpdate = true;
 
-            // ☀️ સૂર્યના કિરણોનું એનિમેશન
             sunRaysGroup.children.forEach((ray, index) => {
                 const rayMesh = ray as THREE.Mesh<
                     THREE.BufferGeometry,

@@ -1,4 +1,3 @@
-// Section/Profile/SellingAccountModal.tsx
 import { useEffect, useState } from "react";
 import { X, Store, User, MapPinned, Sprout, Check } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
@@ -32,22 +31,18 @@ interface Props {
 }
 
 interface FormState {
-    // quickInfo
     sellingAccountName: string;
     mobileNumber: string;
     shortAddress: string;
     aadhaarNumber: string;
-    // basicIdentity
     dateOfBirth: string;
     gender: string;
-    // farmAndLandDetails
     village: string;
     taluka: string;
     district: string;
     state: string;
     pincode: string;
     surveyNumber: string;
-    // cropAndProductionInfo
     primaryCrops: string[];
     cropSeason: string;
     expectedYieldValue: string;
@@ -124,7 +119,6 @@ export default function SellingAccountModal({ open, onClose, onCreated, initial 
         } else {
             update("sellingAccountName", "");
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open, useProfileInfo, user, initial]);
 
     if (!open) return null;
@@ -223,7 +217,6 @@ export default function SellingAccountModal({ open, onClose, onCreated, initial 
     return (
         <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black/40 p-4">
             <div className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl bg-white shadow-xl">
-                {/* Header */}
                 <div
                     className="flex items-center justify-between border-b px-5 py-4"
                     style={{ borderColor: theme.line, background: `linear-gradient(120deg, ${theme.forest}, ${theme.forestSoft})` }}
@@ -246,7 +239,6 @@ export default function SellingAccountModal({ open, onClose, onCreated, initial 
                     </button>
                 </div>
 
-                {/* Step indicator */}
                 <div className="flex items-center justify-between gap-2 border-b px-5 py-3" style={{ borderColor: theme.line }}>
                     {steps.map((s, i) => {
                         const StepIcon = s.icon;
@@ -277,7 +269,6 @@ export default function SellingAccountModal({ open, onClose, onCreated, initial 
                     })}
                 </div>
 
-                {/* Form body */}
                 <div className="flex-1 overflow-y-auto p-5">
                     {step === 0 && (
                         <div className="flex flex-col gap-4">
@@ -548,7 +539,6 @@ export default function SellingAccountModal({ open, onClose, onCreated, initial 
                     )}
                 </div>
 
-                {/* Footer navigation */}
                 <div className="flex gap-3 border-t p-5" style={{ borderColor: theme.line }}>
                     <button
                         type="button"

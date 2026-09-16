@@ -1,4 +1,3 @@
-// Section/sall-management/MyProductDetail.tsx
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, MapPin, Phone, Calendar, Package, Pencil, Trash2 } from "lucide-react";

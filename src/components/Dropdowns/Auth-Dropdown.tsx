@@ -6,7 +6,6 @@ import { useAuth } from "../../context/AuthContext";
 export default function AuthDropdown() {
     const { user, loading } = useAuth();
 
-    // AuthContext hajun /auth/me check kari rahyu chhe — flash avoid karva
     if (loading) return null;
 
     if (user) {

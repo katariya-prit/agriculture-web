@@ -33,7 +33,6 @@ export default function ChatInput({ onSend, loading, language, onLanguageChange 
 
     const selectedLang = LANGUAGES.find((l) => l.code === language);
 
-    // Auto-resize textarea logic
     useEffect(() => {
         const el = textareaRef.current;
         if (!el) return;
@@ -42,7 +41,6 @@ export default function ChatInput({ onSend, loading, language, onLanguageChange 
         el.style.height = `${nextHeight}px`;
     }, [text]);
 
-    // Close language dropdown on outside click
     useEffect(() => {
         function handleClickOutside(e: MouseEvent) {
             if (langWrapperRef.current && !langWrapperRef.current.contains(e.target as Node)) {
@@ -95,7 +93,6 @@ export default function ChatInput({ onSend, loading, language, onLanguageChange 
         <div className={`p-2 sm:p-5 transition-colors duration-300 ${isdark ? "bg-zinc-950/80 backdrop-blur-md" : "bg-linear-to-t from-emerald-50/50 via-white/80 to-transparent backdrop-blur-md"
             }`}>
             <div className="mx-auto max-w-3xl w-full">
-                {/* Main Glassmorphic Container */}
                 <div
                     className={`relative flex flex-col w-full rounded-3xl border transition-all duration-300 ${isdark
                             ? isFocused
@@ -106,7 +103,6 @@ export default function ChatInput({ onSend, loading, language, onLanguageChange 
                                 : "bg-[#eef2f5] border-white/80 shadow-[6px_6px_16px_#c5c9cc,-6px_-6px_16px_#ffffff]"
                         }`}
                 >
-                    {/* Image Attachment Preview */}
                     <AnimatePresence>
                         {previewUrl && (
                             <motion.div
@@ -144,9 +140,7 @@ export default function ChatInput({ onSend, loading, language, onLanguageChange 
                         )}
                     </AnimatePresence>
 
-                    {/* Text Input Area */}
                     <div className="flex items-end gap-1.5 sm:gap-2 p-2 sm:p-3 w-full">
-                        {/* Attach Image Button */}
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
@@ -170,7 +164,6 @@ export default function ChatInput({ onSend, loading, language, onLanguageChange 
                             onChange={handleImageSelect}
                         />
 
-                        {/* Textarea — min-w-0 is the critical fix so it can shrink inside the flex row */}
                         <textarea
                             ref={textareaRef}
                             value={text}
@@ -187,7 +180,6 @@ export default function ChatInput({ onSend, loading, language, onLanguageChange 
                                 }`}
                         />
 
-                        {/* Language Selector — Neomorphism Custom Dropdown */}
                         <div ref={langWrapperRef} className="relative shrink-0 select-none">
                             <motion.button
                                 whileHover={{ scale: loading ? 1 : 1.02 }}
@@ -203,7 +195,6 @@ export default function ChatInput({ onSend, loading, language, onLanguageChange 
                                 }`}
                             >
                                 <Globe className="h-3 w-3 sm:h-3.5 sm:w-3.5 shrink-0 opacity-80" />
-                                {/* Short code on mobile, full label from sm breakpoint up */}
                                 <span className="sm:hidden">{selectedLang?.code.toUpperCase()}</span>
                                 <span className="hidden sm:inline">{selectedLang?.label}</span>
                                 <ChevronDown
@@ -211,7 +202,6 @@ export default function ChatInput({ onSend, loading, language, onLanguageChange 
                                 />
                             </motion.button>
 
-                            {/* Dropdown Menu */}
                             <AnimatePresence>
                                 {isLangOpen && (
                                     <motion.div
@@ -249,7 +239,6 @@ export default function ChatInput({ onSend, loading, language, onLanguageChange 
                             </AnimatePresence>
                         </div>
 
-                        {/* Send / Action Button */}
                         <motion.button
                             whileHover={{ scale: canSend ? 1.05 : 1 }}
                             whileTap={{ scale: canSend ? 0.95 : 1 }}
@@ -276,7 +265,6 @@ export default function ChatInput({ onSend, loading, language, onLanguageChange 
                     </div>
                 </div>
 
-                {/* Bottom Helper Hint */}
                 <div className="mt-2 flex items-center justify-center gap-1 sm:gap-1.5 text-[10px] sm:text-[11px] px-2 text-center">
                     <span className={isdark ? "text-zinc-500" : "text-zinc-400"}>
                         <span className="hidden sm:inline">Press </span>

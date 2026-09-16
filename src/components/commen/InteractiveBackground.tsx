@@ -39,15 +39,12 @@ export default function InteractiveBackground() {
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Neomorphism Base Fill
       ctx.fillStyle = "#eef2f5";
       ctx.fillRect(0, 0, width, height);
 
-      // 1. Draw Fixed Perfect Straight Grid Lines
       const cols = Math.ceil(width / gridSize);
       const rows = Math.ceil(height / gridSize);
 
-      // Vertical Lines
       for (let c = 0; c <= cols; c++) {
         const x = c * gridSize;
         ctx.beginPath();
@@ -58,7 +55,6 @@ export default function InteractiveBackground() {
         ctx.stroke();
       }
 
-      // Horizontal Lines
       for (let r = 0; r <= rows; r++) {
         const y = r * gridSize;
         ctx.beginPath();
@@ -69,11 +65,9 @@ export default function InteractiveBackground() {
         ctx.stroke();
       }
 
-      // 2. Mouse Highlight Effect (Highlight nearby lines smoothly without distorting)
       if (mouse.x > 0 && mouse.y > 0) {
         const highlightRadius = 200;
 
-        // Highlight Vertical Lines Near Mouse
         const startCol = Math.max(0, Math.floor((mouse.x - highlightRadius) / gridSize));
         const endCol = Math.min(cols, Math.ceil((mouse.x + highlightRadius) / gridSize));
 
@@ -95,7 +89,6 @@ export default function InteractiveBackground() {
           }
         }
 
-        // Highlight Horizontal Lines Near Mouse
         const startRow = Math.max(0, Math.floor((mouse.y - highlightRadius) / gridSize));
         const endRow = Math.min(rows, Math.ceil((mouse.y + highlightRadius) / gridSize));
 
@@ -117,7 +110,6 @@ export default function InteractiveBackground() {
           }
         }
 
-        // Soft Radial Glow
         const glowGradient = ctx.createRadialGradient(
           mouse.x,
           mouse.y,

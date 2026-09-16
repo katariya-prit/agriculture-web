@@ -4,7 +4,7 @@ import { FiCalendar, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 interface DatePickerProps {
     label?: string;
     placeholder?: string;
-    value: string; // "YYYY-MM-DD"
+    value: string;
     onChange: (value: string) => void;
     minDate?: string;
     maxDate?: string;

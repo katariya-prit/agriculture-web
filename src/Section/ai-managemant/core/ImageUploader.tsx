@@ -42,7 +42,6 @@ export default function ImageUploader({ previewUrl, onImageSelect, onImageClear 
                                 ? "bg-zinc-900/90 border-emerald-500/40 text-emerald-400" 
                                 : "bg-emerald-50/80 border-emerald-200 text-emerald-800"
                         }`}>
-                            {/* Clickable Image Thumbnail */}
                             <img
                                 src={previewUrl}
                                 alt="Crop preview"
@@ -83,7 +82,6 @@ export default function ImageUploader({ previewUrl, onImageSelect, onImageClear 
                 )}
             </AnimatePresence>
 
-            {/* Modal for Image Upload Options */}
             <AnimatePresence>
                 {isModalOpen && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
@@ -124,7 +122,6 @@ export default function ImageUploader({ previewUrl, onImageSelect, onImageClear 
                 )}
             </AnimatePresence>
 
-            {/* Preview Zoom Modal (ઉપસીને ઓપન થશે) */}
             <AnimatePresence>
                 {isZoomOpen && previewUrl && (
                     <motion.div

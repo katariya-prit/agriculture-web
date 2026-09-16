@@ -1,4 +1,3 @@
-// components/ai-management/core/types.ts
 import type { GeminiCropAnalysis } from "../../../services/ai-service";
 
 export interface ChatMessage {

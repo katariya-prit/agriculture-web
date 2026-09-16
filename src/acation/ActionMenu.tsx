@@ -1,4 +1,3 @@
-// Section/sall-management/core/ActionMenu.tsx
 import { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
 import { MoreVertical } from "lucide-react";
@@ -19,11 +18,10 @@ export default function ActionMenu({ items }: Props) {
   const btnRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Button ni screen position calculate karo, dropdown ne tya j pin karva mate
   useLayoutEffect(() => {
     if (open && btnRef.current) {
       const rect = btnRef.current.getBoundingClientRect();
-      const menuWidth = 144; // w-36
+      const menuWidth = 144;
       let left = rect.right - menuWidth;
       if (left < 8) left = 8;
 

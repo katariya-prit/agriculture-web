@@ -1,10 +1,3 @@
-// data/mockMarketData.ts
-//
-// FAKE DATA - real backend/API nathi jodi, etle aa mock generator vaparyu chhe.
-// Jyare tamari pase real mandi rate API/backend aavi jaay, tyare
-// `getMarketRates()` ne actual `fetch()` call thi replace kari devanu -
-// baki Dashboard.tsx ma koi change ni jarur nahi padse (same shape return karo).
-
 export type Trend = "up" | "down" | "stable";
 
 export interface MandiRate {
@@ -17,7 +10,7 @@ export interface MandiRate {
     minPrice: number;
     maxPrice: number;
     modalPrice: number;
-    unit: string; // "Quintal"
+    unit: string;
     trend: Trend;
     changePercent: number;
     updatedAt: string;
@@ -60,7 +53,6 @@ const MARKETS: {
         { market: "Surat APMC", district: "Surat", state: "Gujarat" },
     ];
 
-// simple seeded pseudo-random so numbers stay stable within a session
 function seededRandom(seed: number) {
     const x = Math.sin(seed) * 10000;
     return x - Math.floor(x);
@@ -74,7 +66,7 @@ function buildRate(
     const marketInfo = MARKETS[marketIndex];
 
     const seed = cropIndex * 31 + marketIndex * 7;
-    const wobble = (seededRandom(seed) - 0.5) * 0.12; // +/- 6%
+    const wobble = (seededRandom(seed) - 0.5) * 0.12;
     const modalPrice = Math.round(
         cropInfo.basePrice * (1 + wobble)
     );
@@ -111,18 +103,12 @@ function buildRate(
     };
 }
 
-/**
- * Returns mock mandi rates. Shape mirrors what a real backend
- * (e.g. GET /api/market-rates) would be expected to return.
- */
 export async function getMarketRates(): Promise<MandiRate[]> {
-    // simulate network latency so loading states can be tested
     await new Promise((resolve) => setTimeout(resolve, 400));
 
     const rates: MandiRate[] = [];
 
     CROPS.forEach((_, cropIndex) => {
-        // each crop listed in 1-2 markets so the list feels realistic, not exhaustive
         const marketIndex = cropIndex % MARKETS.length;
         rates.push(buildRate(cropIndex, marketIndex));
 
@@ -134,10 +120,6 @@ export async function getMarketRates(): Promise<MandiRate[]> {
 
     return rates;
 }
-
-/**
- * Returns a 7-day mock price history for a given crop, for the trend chart.
- */
 export async function getPriceHistory(
     crop: string
 ): Promise<PriceHistoryPoint[]> {

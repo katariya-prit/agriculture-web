@@ -71,7 +71,6 @@ export default function SignupPage() {
         <div className="min-h-screen select-none bg-[#eef2f5] flex items-center justify-center font-sans text-gray-800 p-4 md:p-8">
             <main className="flex flex-col lg:flex-row items-center justify-center max-w-6xl w-full mx-auto gap-8 lg:gap-16">
 
-                {/* Left Side Section - Text Only */}
                 <div className="lg:w-1/2 w-full hidden lg:flex flex-col justify-center p-6">
                     <div className="max-w-md select-none">
                         <h2 className="text-3xl md:text-4xl font-extrabold text-green-900 leading-tight mb-3">
@@ -126,7 +125,6 @@ export default function SignupPage() {
                     </div>
                 </div>
 
-                {/* Right Side Signup Box with Neomorphism Theme */}
                 <div className="lg:w-120 w-full flex justify-center">
                     <div className="bg-[#eef2f5] border border-white/60 rounded-[50px] p-8 shadow-[12px_12px_24px_#c5c9cc,-12px_-12px_24px_#ffffff] w-full">
 
@@ -137,7 +135,6 @@ export default function SignupPage() {
                         </div>
 
                         <form className="space-y-5 px-2 md:px-4" onSubmit={handleSubmit}>
-                            {/* Select Dropdown (Phone Option Disabled) */}
                             <Select
                                 label="Register With"
                                 options={signupTypeOptions}
@@ -151,7 +148,6 @@ export default function SignupPage() {
                                 }}
                             />
 
-                            {/* Username + Full Name */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <Input
                                     Icons={<FaUserTag />}
@@ -176,7 +172,6 @@ export default function SignupPage() {
                                 />
                             </div>
 
-                            {/* Email / Phone Input */}
                             <Input
                                 Icons={signupType === "email" ? <MdOutlineMailLock /> : <FiPhone />}
                                 label={signupType === "email" ? "Email Address" : "Phone Number"}
@@ -188,7 +183,6 @@ export default function SignupPage() {
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                             />
 
-                            {/* Password + Confirm Password */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <Input
                                     Icons={<PiPasswordFill />}
@@ -213,7 +207,6 @@ export default function SignupPage() {
                                 />
                             </div>
 
-                            {/* Submit Button */}
                             <Button
                                 type="submit"
                                 name={loading ? "Creating account..." : "Sign Up"}

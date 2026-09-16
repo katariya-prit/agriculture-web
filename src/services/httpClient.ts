@@ -1,4 +1,3 @@
-// services/httpClient.ts
 import { API_BASE_URL } from "../utils/apiConfig";
 import { tokenService } from "./tokenService";
 

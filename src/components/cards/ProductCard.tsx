@@ -8,7 +8,6 @@ interface ProductCardProps {
     listing: SaleListing;
     onEdit?: (listing: SaleListing) => void;
     onDelete?: (id: string) => void;
-    /** Kaya route par navigate karvu — default marketplace detail route */
     getDetailPath?: (listing: SaleListing) => string;
 }
 

@@ -1,4 +1,3 @@
-// services/profileAnalysisService.ts
 
 export interface ChecklistEntry {
     key: string;
@@ -38,14 +37,6 @@ interface AnalyzableSellingAccount {
     soilType?: string | null;
 }
 
-/**
- * Profile (user) + selling account na actual data ne analyze kari ne
- * completion percentage, checklist ane ek short "next step" tip return kare chhe.
- *
- * Backend na `profileCompletion` field par depend nathi karto — etle
- * backend serialization ma koi issue hoy to pan frontend potej barabar
- * result batavi shake.
- */
 export function analyzeProfile(
     user: AnalyzableUser | null | undefined,
     account: AnalyzableSellingAccount | null | undefined

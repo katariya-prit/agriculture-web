@@ -1,4 +1,3 @@
-// services/adminService.ts
 import { httpClient } from "./httpClient";
 import type { User } from "./authService";
 

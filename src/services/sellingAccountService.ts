@@ -1,4 +1,3 @@
-// services/sellingAccountService.ts
 import { httpClient } from "./httpClient";
 
 export const sellingAccountService = {

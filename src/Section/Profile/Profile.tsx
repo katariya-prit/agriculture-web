@@ -1,4 +1,3 @@
-// Section/Profile/Profile.tsx
 import { useEffect, useState } from "react";
 import {
     Mail,
@@ -232,7 +231,6 @@ export default function Profile() {
                 </div>
             )}
 
-            {/* top view */}
             <div
                 className={`flex w-full flex-col gap-6 rounded-2xl border p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-6 ${isdark ? "border-zinc-800 bg-[#181818]" : "border-[#DCE8DF] bg-white"
                     }`}
@@ -301,7 +299,6 @@ export default function Profile() {
                 </div>
             </div>
 
-            {/* profile completion */}
             <div
                 className={`flex w-full flex-col gap-5 rounded-2xl border p-5 shadow-sm sm:p-6 ${isdark ? "border-zinc-800 bg-[#181818]" : "border-[#DCE8DF] bg-white"
                     }`}

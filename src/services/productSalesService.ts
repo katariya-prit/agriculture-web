@@ -1,4 +1,3 @@
-// services/productSalesService.ts
 import { httpClient } from "./httpClient";
 
 export const productSalesService = {

@@ -1,4 +1,3 @@
-// Auth/EmailVerification.tsx
 import { useEffect, useRef, useState, type KeyboardEvent, type ClipboardEvent } from "react";
 import { useLocation, useNavigate, useSearchParams, Link } from "react-router-dom";
 import { Sprout, MailCheck } from "lucide-react";
@@ -23,8 +22,6 @@ export default function EmailVerification() {
     const location = useLocation();
     const [searchParams] = useSearchParams();
 
-    // Signup pachi navigate(..., { state: { email } }) thi aave chhe,
-    // ya direct link kholay to ?email=... thi
     const email = (location.state as { email?: string })?.email ?? searchParams.get("email") ?? "";
 
     const [digits, setDigits] = useState<string[]>(Array(OTP_LENGTH).fill(""));
@@ -150,7 +147,6 @@ export default function EmailVerification() {
                     </div>
                 </div>
 
-                {/* OTP boxes */}
                 <div className="mt-6 flex justify-center gap-2">
                     {digits.map((digit, i) => (
                         <input

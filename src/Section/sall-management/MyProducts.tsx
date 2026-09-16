@@ -1,4 +1,3 @@
-// Section/sall-management/MyProducts.tsx
 import { useEffect, useMemo, useState } from "react";
 import { LayoutGrid, Table as TableIcon, Sprout } from "lucide-react";
 import { productSalesService } from "../../services/productSalesService";
@@ -61,10 +60,8 @@ export default function MyProducts() {
 
     function handleEdit(listing: SaleListing) {
         console.log("Edit:", listing);
-        // navigate to edit form
     }
 
-    // 👇 MyProducts na cards/rows have "/dashboard/my-product/:id" par navigate thashe
     const getDetailPath = (listing: SaleListing) => `/dashboard/my-product/${listing.id}`;
 
     return (

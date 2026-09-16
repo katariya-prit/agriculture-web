@@ -9,7 +9,6 @@ import {
 import { createPortal } from "react-dom";
 
 export interface ImageViewerHandle {
-    /** index = kai image thi khulvanu, el = clicked element (jethi expand animation start thase) */
     open: (index: number, el: HTMLElement) => void;
 }
 
@@ -193,7 +192,6 @@ const ImageViewer = forwardRef<ImageViewerHandle, ImageViewerProps>(
                         />
                     </div>
 
-                    {/* Toolbar */}
                     <div className="absolute right-2 top-2 flex items-center gap-1.5 rounded-full bg-black/60 px-2 py-1.5 backdrop-blur-sm sm:right-3 sm:top-3">
                         <button
                             onClick={zoomOut}
@@ -221,7 +219,6 @@ const ImageViewer = forwardRef<ImageViewerHandle, ImageViewerProps>(
                         </button>
                     </div>
 
-                    {/* Prev / Next */}
                     {images.length > 1 && (
                         <>
                             <button

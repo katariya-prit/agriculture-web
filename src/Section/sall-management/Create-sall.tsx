@@ -1,4 +1,3 @@
-// Section/sall-management/Create-sall.tsx
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { LuUpload, LuX, LuImagePlus, LuLoader, LuSprout } from "react-icons/lu";
@@ -43,7 +42,6 @@ const INITIAL_FORM: SaleForm = {
     description: "",
 };
 
-// Frontend (camelCase) -> Backend (snake_case) field mapping
 const FIELD_MAP: Record<keyof SaleForm, string> = {
     cropName: "crop_name",
     variety: "variety",
@@ -105,7 +103,6 @@ export default function CreateSall() {
 
         const payload = new FormData();
 
-        // Camel case -> snake_case convert kari ne backend ne mokalvu
         (Object.keys(form) as (keyof SaleForm)[]).forEach((key) => {
             const backendKey = FIELD_MAP[key];
             const value = form[key];
@@ -132,7 +129,6 @@ export default function CreateSall() {
 
     return (
         <form onSubmit={handleSubmit} className="max-w-full mx-auto space-y-6">
-            {/* Header */}
             <div className="flex items-center gap-3 rounded-2xl bg-linear-to-r from-green-700 to-green-600 px-6 py-5 text-white shadow-sm">
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/15">
                     <LuSprout size={22} />
@@ -239,7 +235,6 @@ export default function CreateSall() {
                 </div>
             </div>
 
-            {/* Image section */}
             <div className="rounded-2xl border border-green-900/10 bg-white p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-3">
                     <label className="block text-sm font-medium text-green-900">

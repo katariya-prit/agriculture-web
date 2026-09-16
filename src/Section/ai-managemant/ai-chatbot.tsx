@@ -108,20 +108,16 @@ export default function AiChatbot() {
     return (
         <div className={`relative flex h-full overflow-hidden rounded-2xl border ${isdark ? "border-gray-800 bg-gray-950" : "border-green-100 bg-white"}`}>
             
-            {/* Main Chat Area */}
             <div className="flex min-w-0 flex-1 flex-col relative h-full">
                 
-                {/* 1. Chat Message List (જ્યારે મેસેજ હોય ત્યારે જ દેખાશે) */}
                 {hasMessages ? (
                     <div className="flex-1 overflow-y-auto">
                         <ChatMessageList messages={messages} loading={loading} />
                     </div>
                 ) : (
-                    /* 2. Welcome State (સેન્ટરમાં રાખવા માટે Spacer) */
                     <div className="flex-1" />
                 )}
 
-                {/* 3. Dynamic Animated Input Box Container */}
                 <motion.div
                     layout
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -131,7 +127,6 @@ export default function AiChatbot() {
                             : "justify-center p-6 pb-20"
                     }`}
                 >
-                    {/* Welcome Header (જો મેસેજ ના હોય ત્યારે જ દેખાશે) */}
                     <AnimatePresence>
                         {!hasMessages && (
                             <motion.div
@@ -155,7 +150,6 @@ export default function AiChatbot() {
                         )}
                     </AnimatePresence>
 
-                    {/* Chat Input Bar */}
                     <div className="w-full max-w-3xl">
                         <ChatInput 
                             onSend={handleSend} 
@@ -167,7 +161,6 @@ export default function AiChatbot() {
                 </motion.div>
             </div>
 
-            {/* Sidebar Desktop */}
             <div className="hidden lg:block">
                 <ChatHistorySidebar 
                     sessions={sessions} 
@@ -178,7 +171,6 @@ export default function AiChatbot() {
                 />
             </div>
 
-            {/* Mobile Sidebar Modal */}
             {isHistoryOpen && (
                 <div className="absolute inset-0 z-20 flex lg:hidden">
                     <div className="flex-1 bg-black/30" onClick={() => setIsHistoryOpen(false)} />

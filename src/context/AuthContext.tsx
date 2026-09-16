@@ -18,7 +18,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Koi j module thi 401 aave (token expire/invalid), user apoap logged-out state ma aavi jaay
         setUnauthorizedHandler(() => setUser(null));
 
         (async () => {
@@ -40,7 +39,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     async function signup(username: string, fullName: string, email: string, password: string) {
         await authService.signup({ username, fullName, email, password });
-        // register email-verify pending rakhe chhe — token nathi aavto, etle user set nathi karvanu
     }
 
     async function verifyEmail(email: string, token: string) {

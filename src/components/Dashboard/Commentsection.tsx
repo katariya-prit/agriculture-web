@@ -62,7 +62,6 @@ export default function CommentSection({ cropLabel, marketLabel }: Props) {
                     : "border-white/60 bg-[#eef2f5] text-gray-900 shadow-[4px_4px_10px_#c5c9cc,-4px_-4px_10px_#ffffff]"
                 }`}
         >
-            {/* Header */}
             <div className="mb-4 flex items-center gap-2">
                 <MessageCircle
                     className={`h-4 w-4 ${isDark ? "text-green-400" : "text-green-700"}`}
@@ -77,7 +76,6 @@ export default function CommentSection({ cropLabel, marketLabel }: Props) {
                 </p>
             </div>
 
-            {/* Input Form */}
             <div
                 className={`mb-5 flex flex-col gap-2 border-b pb-4 sm:flex-row ${isDark ? "border-zinc-800" : "border-gray-300/60"
                     }`}
@@ -115,7 +113,6 @@ export default function CommentSection({ cropLabel, marketLabel }: Props) {
                 </button>
             </div>
 
-            {/* Comments List */}
             <div className="flex flex-col gap-4">
                 {comments.map((comment) => (
                     <div key={comment.id} className="flex gap-3">

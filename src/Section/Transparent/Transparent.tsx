@@ -45,7 +45,6 @@ export default function Transparent() {
         );
     }, [listings, search]);
 
-    // ---- Neumorphic tokens (theme-aware) ----
     const bg = isdark ? "bg-[#272727]" : "bg-[#eef2f5]";
     const raised = isdark
         ? "shadow-[6px_6px_14px_#1c1c1c,-6px_-6px_14px_#323232]"
@@ -61,7 +60,6 @@ export default function Transparent() {
 
     return (
         <div className={`min-h-full ${bg} p-4 sm:p-6 transition-colors duration-300`}>
-            {/* Header */}
             <div className={`mb-6 flex items-center gap-4 rounded-[28px] ${bg} ${raised} px-6 py-5 transition-all duration-300`}>
                 <div className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-[20px] ${bg} ${raisedSm}`}>
                     <Truck size={28} className={isdark ? "text-green-400" : "text-green-700"} />
@@ -74,10 +72,8 @@ export default function Transparent() {
                 </div>
             </div>
 
-            {/* Content panel */}
             <div className={`rounded-[28px] ${bg} ${raised} p-5 sm:p-6 transition-all duration-300`}>
                 <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    {/* Neumorphic search input — pressed/inset look */}
                     <div className={`relative w-full sm:w-72 rounded-2xl ${bg} ${pressed}`}>
                         <Search className={`pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 ${textMuted}`} />
                         <input
@@ -88,7 +84,6 @@ export default function Transparent() {
                         />
                     </div>
 
-                    {/* Neumorphic toggle — active tab looks pressed-in */}
                     <div className={`flex w-fit items-center gap-1.5 rounded-2xl ${bg} ${pressed} p-1.5`}>
                         <button
                             type="button"

@@ -4,7 +4,7 @@ import { LuBold, LuItalic, LuUnderline, LuList, LuListOrdered, LuHeading2 } from
 interface RichTextareaProps {
     label?: string;
     placeholder?: string;
-    value: string; // HTML string
+    value: string;
     onChange: (html: string) => void;
 }
 

@@ -32,7 +32,6 @@ body::-webkit-scrollbar {
   box-shadow: 0 0 10px #000;
 }
 
-/* આખા પ્રોજેક્ટની બધી જગ્યાએથી Scrollbar હટાવવા માટે */
 *::-webkit-scrollbar {
   display: none !important;
   width: 0 !important;
@@ -44,9 +43,6 @@ body::-webkit-scrollbar {
   scrollbar-width: none !important;
 }
 
-/* =========================================================
-   GLOBAL PAGE LAYOUT & TYPOGRAPHY
-   ========================================================= */
 .overview-page {
   position: relative;
   min-height: 100vh;
@@ -57,9 +53,6 @@ body::-webkit-scrollbar {
   font-family: 'Inter', sans-serif;
 }
 
-/* =========================================================
-   BACKGROUND & LINE GRID ANIMATION
-   ========================================================= */
 .bg-container {
   pointer-events: none;
   position: fixed;
@@ -69,7 +62,6 @@ body::-webkit-scrollbar {
   background-color: #f4fbf6;
 }
 
-/* Moving Grid Line Pattern */
 .animated-grid {
   position: absolute;
   inset: 0;
@@ -101,9 +93,6 @@ body::-webkit-scrollbar {
       rgba(209, 250, 229, 0.3));
 }
 
-/* =========================================================
-   REUSABLE UI COMPONENTS (GlassPanel, Pill, Buttons)
-   ========================================================= */
 .glass-panel {
   border-radius: 1.5rem;
   border: 1px solid #a7f3d0;
@@ -158,9 +147,6 @@ body::-webkit-scrollbar {
   background-color: #ecfdf5;
 }
 
-/* =========================================================
-   HEADER & NAVIGATION
-   ========================================================= */
 .site-header {
   position: fixed;
   top: 1rem;
@@ -214,9 +200,6 @@ body::-webkit-scrollbar {
   color: #047857;
 }
 
-/* =========================================================
-   MAIN CONTENT & SECTIONS LAYOUT
-   ========================================================= */
 .main-content {
   position: relative;
   z-index: 10;
@@ -275,9 +258,6 @@ body::-webkit-scrollbar {
   line-height: 1.6;
 }
 
-/* =========================================================
-   HERO SECTION
-   ========================================================= */
 .hero-section {
   display: flex;
   min-height: 70vh;
@@ -372,9 +352,6 @@ body::-webkit-scrollbar {
   }
 }
 
-/* =========================================================
-   ABOUT SECTION
-   ========================================================= */
 .about-section {
   display: flex;
   min-height: 70vh;
@@ -456,9 +433,6 @@ body::-webkit-scrollbar {
   color: #047857;
 }
 
-/* =========================================================
-   SERVICES SECTION
-   ========================================================= */
 .services-grid {
   margin-top: 3.5rem;
   display: grid;
@@ -509,9 +483,6 @@ body::-webkit-scrollbar {
   color: rgba(15, 46, 29, 0.65);
 }
 
-/* =========================================================
-   MARKETPLACE SECTION
-   ========================================================= */
 .marketplace-grid {
   display: grid;
   gap: 3.5rem;
@@ -601,9 +572,6 @@ body::-webkit-scrollbar {
   color: #047857;
 }
 
-/* =========================================================
-   WHY AGRICONNECT & CTA & FOOTER
-   ========================================================= */
 .text-center {
   text-align: center;
 }

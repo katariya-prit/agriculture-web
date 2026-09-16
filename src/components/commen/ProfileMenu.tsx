@@ -52,7 +52,6 @@ export default function ProfileMenu() {
 
     return (
         <div className="relative select-none" ref={menuRef}>
-            {/* Trigger Button */}
             <motion.button
                 ref={triggerRef}
                 type="button"
@@ -83,7 +82,6 @@ export default function ProfileMenu() {
                 </motion.div>
             </motion.button>
 
-            {/* Dropdown Menu */}
             <AnimatePresence>
                 {open && (
                     <motion.div
@@ -99,7 +97,6 @@ export default function ProfileMenu() {
                                 : "bg-[#eef2f5] border border-white/80 shadow-[6px_6px_16px_#c5c9cc,-6px_-6px_16px_#ffffff] text-gray-900"
                             }`}
                     >
-                        {/* Profile Info Header */}
                         <div
                             className={`flex flex-col items-center gap-1.5 p-4 border-b ${isdark
                                     ? "bg-zinc-900/50 border-zinc-800"
@@ -125,7 +122,6 @@ export default function ProfileMenu() {
                             </div>
                         </div>
 
-                        {/* Actions List */}
                         <div className="flex flex-col p-2 gap-1">
                             <button
                                 type="button"

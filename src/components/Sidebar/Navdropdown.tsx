@@ -4,27 +4,20 @@ import { LuChevronDown, LuUser, LuSettings, LuLogOut } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
-// ============================================================
-// Generic dropdown — koi pan trigger + items list sathe vaparay
-// ============================================================
-
 export interface NavDropdownItem {
     label: string;
     icon?: IconType;
     onClick?: () => void;
-    danger?: boolean; // red styling — jem ke Logout
-    dividerBefore?: boolean; // aa item pehla thin line
+    danger?: boolean;
+    dividerBefore?: boolean;
 }
 
 interface NavDropdownProps {
-    /** Button ni andar su dekhavu — avatar, name, icon, kai pan */
     trigger: ReactNode;
     items: NavDropdownItem[];
     align?: "left" | "right";
     className?: string;
-    /** Trigger button ni styling override — default top-navbar pill look chhe */
     triggerClassName?: string;
-    /** Dropdown panel ni styling override (width samet) — default w-56 white card chhe */
     panelClassName?: string;
 }
 
@@ -113,12 +106,6 @@ export default function NavDropdown({
         </div>
     );
 }
-
-// ============================================================
-// Ready-made: top navbar no profile dropdown
-// (avatar initials + name + chevron — screenshot pramane)
-// ============================================================
-
 export function UserProfileDropdown() {
     const { user, logout } = useAuth();
     const navigate = useNavigate();

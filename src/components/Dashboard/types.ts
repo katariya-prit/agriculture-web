@@ -1,4 +1,3 @@
-// components/Dashboard/types.ts
 import type { MandiRate, PriceHistoryPoint, Trend } from "../../../data/mockMarketData";
 
 export type { MandiRate, PriceHistoryPoint, Trend };

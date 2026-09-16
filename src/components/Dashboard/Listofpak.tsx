@@ -32,7 +32,6 @@ export default function ListOfPak({
                 {market} - Pak Sale List
             </p>
 
-            {/* Search Bar */}
             <div className="relative mb-4">
                 <Search
                     className={`pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 ${
@@ -52,7 +51,6 @@ export default function ListOfPak({
                 />
             </div>
 
-            {/* Crop List */}
             <div className="flex flex-col gap-2.5 overflow-y-auto pr-1">
                 {rates.length === 0 ? (
                     <p

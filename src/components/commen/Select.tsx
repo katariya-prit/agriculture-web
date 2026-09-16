@@ -66,7 +66,6 @@ export default function Select({
                 </label>
             )}
 
-            {/* Neomorphism Styled Select Button */}
             <button
                 type="button"
                 disabled={disabled}
@@ -84,11 +83,9 @@ export default function Select({
                 />
             </button>
 
-            {/* Neomorphism Styled Dropdown Menu */}
             {open && (
                 <div className="absolute z-50 mt-3 w-full bg-[#eef2f5] border border-white/80 rounded-[24px] shadow-[8px_8px_16px_#c5c9cc,-8px_-8px_16px_#ffffff] overflow-hidden p-2">
                     
-                    {/* Search Field */}
                     <div className="flex items-center gap-2 px-3 py-2 bg-[#eef2f5] border border-white/60 rounded-[15px] shadow-[inset_2px_2px_4px_#c5c9cc,inset_-2px_-2px_4px_#ffffff] mb-2">
                         <FiSearch className="text-gray-400 shrink-0" size={16} />
                         <input
@@ -100,7 +97,6 @@ export default function Select({
                         />
                     </div>
 
-                    {/* Options List */}
                     <div className="max-h-48 overflow-y-auto space-y-1">
                         {filtered.length === 0 && (
                             <p className="px-4 py-3 text-xs text-gray-400 text-center">No options found</p>

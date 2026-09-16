@@ -29,7 +29,6 @@ export default function ChatHistorySidebar({
                     : "border-gray-200/80 bg-[#eef2f5]"
             }`}
         >
-            {/* Top Action Header */}
             <div
                 className={`p-3.5 border-b ${
                     isdark ? "border-zinc-800/80" : "border-gray-200/80"
@@ -46,12 +45,11 @@ export default function ChatHistorySidebar({
                             : "bg-emerald-600 text-white shadow-md shadow-emerald-600/20 hover:bg-emerald-700"
                     }`}
                 >
-                    <Plus className="h-4 w-4 stroke-[3]" />
+                    <Plus className="h-4 w-4 stroke-3" />
                     <span>Navi Chat</span>
                 </motion.button>
             </div>
 
-            {/* Chat History List */}
             <div className="no-scrollbar flex-1 overflow-y-auto p-3">
                 <div className="flex items-center justify-between mb-3 px-2">
                     <span

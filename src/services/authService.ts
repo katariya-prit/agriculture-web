@@ -1,4 +1,3 @@
-// services/authService.ts
 import { httpClient } from "./httpClient";
 import { tokenService } from "./tokenService";
 
@@ -51,13 +50,11 @@ export const authService = {
         try {
             await httpClient.delete("/auth/logout");
         } finally {
-            // Server call fail thay to pan client-side token hammesha clear thavu joie
             tokenService.clear();
         }
     },
 
     async me() {
-        // Token j nathi to API call j na karo — nakaamu 401 avoid thay
         if (!tokenService.hasToken()) return null;
         const data = await httpClient.get<{ user: User }>("/auth/me");
         return data?.user ?? null;

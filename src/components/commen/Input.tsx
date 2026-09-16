@@ -36,12 +36,10 @@ export default function Input({
                 {label}
             </label>
             <div className="relative">
-                {/* Left Icon */}
                 <span className="absolute inset-y-0 text-[20px] left-0 flex items-center pl-4 text-gray-500 pointer-events-none">
                     {Icons}
                 </span>
 
-                {/* Neomorphism Inset Input */}
                 <input
                     min={min}
                     list={list}
@@ -55,7 +53,6 @@ export default function Input({
                     } py-3.5 text-sm border border-white/60 rounded-[20px] bg-[#eef2f5] text-gray-800 placeholder:text-gray-400 shadow-[inset_3px_3px_6px_#c5c9cc,inset_-3px_-3px_6px_#ffffff] focus:outline-none focus:ring-2 focus:ring-green-600/30 transition-all duration-300`}
                 />
 
-                {/* Password Toggle Eye Icon - Fixed Focus Outline */}
                 {ShowPassword && (
                     <button
                         type="button"

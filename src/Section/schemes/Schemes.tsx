@@ -85,7 +85,6 @@ export default function Schemes() {
     const { theme } = useTheme();
     const isdark = theme === "dark";
 
-    // ---- Neumorphic tokens (theme-aware, same as Transport page) ----
     const bg = isdark ? "bg-[#272727]" : "bg-[#eef2f5]";
     const raised = isdark
         ? "shadow-[6px_6px_14px_#1c1c1c,-6px_-6px_14px_#323232]"
@@ -136,7 +135,6 @@ export default function Schemes() {
 
     return (
         <div className={`min-h-full ${bg} p-4 sm:p-6 transition-colors duration-300`}>
-            {/* Header */}
             <div className={`mb-6 flex items-center gap-4 rounded-[28px] ${bg} ${raised} px-6 py-5 transition-all duration-300`}>
                 <div className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-[20px] ${bg} ${raisedSm}`}>
                     <Landmark className={`h-6 w-6 ${isdark ? "text-green-400" : "text-green-700"}`} />
@@ -155,7 +153,6 @@ export default function Schemes() {
             </div>
 
             <div className="flex flex-col gap-4">
-                {/* Eligible schemes */}
                 <div className={`rounded-[28px] ${bg} ${raised} p-5 sm:p-6 transition-all duration-300`}>
                     <div className={`mb-5 rounded-2xl ${bg} ${pressed} px-4 py-3.5 text-sm ${textPrimary}`}>
                         Based on your profile — {profile.location} · {profile.landSize} · {profile.cropType}
@@ -182,7 +179,6 @@ export default function Schemes() {
                     </div>
                 </div>
 
-                {/* FPO groups */}
                 <div className={`rounded-[28px] ${bg} ${raised} p-5 sm:p-6 transition-all duration-300`}>
                     <div className="mb-1 flex items-center gap-2">
                         <h2 className={`text-sm font-semibold ${textPrimary}`}>FPO — group selling</h2>

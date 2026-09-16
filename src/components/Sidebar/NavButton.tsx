@@ -55,7 +55,6 @@ export default function NavButton({
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
-            {/* Main Nav Button */}
             <motion.div
                 onClick={handleRowClick}
                 whileTap={{ scale: 0.97 }}
@@ -100,7 +99,6 @@ export default function NavButton({
                 )}
             </motion.div>
 
-            {/* Expanded Child Items Submenu */}
             {isOpen && hasChildren && (
                 <AnimatePresence initial={false}>
                     {expanded && (
@@ -140,7 +138,6 @@ export default function NavButton({
                 </AnimatePresence>
             )}
 
-            {/* Hover Tooltip Menu when Sidebar Collapsed */}
             <AnimatePresence>
                 {!isOpen && hovered && (
                     <motion.div

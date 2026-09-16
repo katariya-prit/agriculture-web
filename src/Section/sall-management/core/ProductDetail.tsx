@@ -1,4 +1,3 @@
-// Section/sall-management/ProductDetail.tsx
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, MapPin, Phone, Calendar, Package } from "lucide-react";
@@ -71,7 +70,6 @@ export default function ProductDetail() {
             </button>
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                {/* Image gallery */}
                 <div className="flex flex-col gap-3">
                     <div className="aspect-video w-full overflow-hidden rounded-2xl border border-emerald-900/10 bg-white shadow-sm">
                         {images[activeImage] ? (
@@ -104,7 +102,6 @@ export default function ProductDetail() {
                     )}
                 </div>
 
-                {/* Details */}
                 <div className="rounded-2xl border border-emerald-900/10 bg-white p-5 shadow-sm sm:p-6">
                     <div className="mb-4 flex items-start justify-between gap-3">
                         <div>

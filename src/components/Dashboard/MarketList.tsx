@@ -48,7 +48,6 @@ export default function MarketList() {
 
     return (
         <div className="flex h-full flex-col gap-6 overflow-y-auto p-2 md:p-4 select-none">
-            {/* Header Section */}
             <div className="flex flex-col gap-2">
                 <button
                     type="button"
@@ -81,7 +80,6 @@ export default function MarketList() {
                 </div>
             </div>
 
-            {/* Error Message */}
             {error && (
                 <div
                     className={`rounded-xl px-4 py-3 text-xs font-semibold ${
@@ -94,7 +92,6 @@ export default function MarketList() {
                 </div>
             )}
 
-            {/* Loading Skeleton */}
             {loading ? (
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
                     {Array.from({ length: 4 }).map((_, index) => (
@@ -118,7 +115,6 @@ export default function MarketList() {
                     ))}
                 </div>
             ) : (
-                /* Market Cards Grid */
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
                     {markets.map((market) => (
                         <MarketCard

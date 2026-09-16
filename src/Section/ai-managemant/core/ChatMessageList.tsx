@@ -15,11 +15,9 @@ function isGeminiAnalysis(a: any): a is GeminiCropAnalysis {
     return a && typeof a.cropName === "string";
 }
 
-// Analysis Card Component (assistant ના image-analysis response માટે)
 function AnalysisCard({ analysis, isdark }: { analysis: GeminiCropAnalysis; isdark: boolean }) {
     return (
         <div className="space-y-3 text-xs sm:text-sm">
-            {/* Header: Crop Name + Health Status */}
             <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                     <div className={`flex h-8 w-8 items-center justify-center rounded-xl ${
@@ -58,14 +56,12 @@ function AnalysisCard({ analysis, isdark }: { analysis: GeminiCropAnalysis; isda
                 </div>
             </div>
 
-            {/* Description */}
             {analysis.description && (
                 <div className={`rounded-2xl p-3 ${isdark ? "bg-white/5" : "bg-gray-50"}`}>
                     <MarkdownText text={analysis.description} />
                 </div>
             )}
 
-            {/* Symptoms */}
             {analysis.symptoms && analysis.symptoms.length > 0 && (
                 <div>
                     <div className="mb-1.5 flex items-center gap-1.5 font-semibold text-[11px] uppercase tracking-wide opacity-70">
@@ -82,7 +78,6 @@ function AnalysisCard({ analysis, isdark }: { analysis: GeminiCropAnalysis; isda
                 </div>
             )}
 
-            {/* Treatment */}
             {analysis.treatment && (
                 <div className="space-y-2.5">
                     {analysis.treatment.organic?.length > 0 && (
@@ -142,14 +137,12 @@ export default function ChatMessageList({ messages, loading }: Props) {
     const { theme } = useTheme();
     const isdark = theme === "dark";
 
-    // Zoomed Image માટે State
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     return (
         <div className={`no-scrollbar flex-1 overflow-y-auto p-4 sm:p-6 transition-colors duration-300 ${
-            isdark ? "bg-[#09090b]" : "bg-gradient-to-b from-slate-50 via-white to-slate-50"
+            isdark ? "bg-[#09090b]" : "bg-linear-to-b from-slate-50 via-white to-slate-50"
         }`}>
-            {/* Empty State */}
             {messages.length === 0 && !loading && (
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -172,7 +165,6 @@ export default function ChatMessageList({ messages, loading }: Props) {
                 </motion.div>
             )}
 
-            {/* Message Stream */}
             <div className="mx-auto max-w-3xl space-y-6">
                 <AnimatePresence initial={false}>
                     {messages.map((msg) => (
@@ -196,7 +188,6 @@ export default function ChatMessageList({ messages, loading }: Props) {
                                     ? isdark ? "bg-emerald-600 text-white rounded-tr-sm" : "bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-tr-sm"
                                     : isdark ? "bg-[#18181b] border border-zinc-800 text-zinc-200 rounded-tl-sm" : "bg-white border border-gray-100 text-gray-800 rounded-tl-sm"
                             }`}>
-                                {/* Image Attachment (Click to Pop-Up/Zoom) */}
                                 {msg.imagePreviewUrl && (
                                     <div
                                         onClick={() => setSelectedImage(msg.imagePreviewUrl!)}
@@ -213,7 +204,6 @@ export default function ChatMessageList({ messages, loading }: Props) {
                                     </div>
                                 )}
 
-                                {/* Plain Text Message */}
                                 {msg.text && (
                                     <div className="text-xs sm:text-sm leading-relaxed">
                                         {msg.role === "user" ? (
@@ -224,7 +214,6 @@ export default function ChatMessageList({ messages, loading }: Props) {
                                     </div>
                                 )}
 
-                                {/* Gemini Crop Analysis Result */}
                                 {msg.analysis && isGeminiAnalysis(msg.analysis) && (
                                     <AnalysisCard analysis={msg.analysis} isdark={isdark} />
                                 )}
@@ -233,7 +222,6 @@ export default function ChatMessageList({ messages, loading }: Props) {
                     ))}
                 </AnimatePresence>
 
-                {/* Loading Indicator */}
                 {loading && (
                     <motion.div
                         initial={{ opacity: 0, y: 12 }}
@@ -256,7 +244,6 @@ export default function ChatMessageList({ messages, loading }: Props) {
                 )}
             </div>
 
-            {/* Image Pop-Up Fullscreen Modal */}
             <AnimatePresence>
                 {selectedImage && (
                     <motion.div

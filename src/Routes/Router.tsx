@@ -43,10 +43,6 @@ export default function Router() {
           </PublicRoute>
         }
       />
-
-      {/* Email verify link (Brevo email ma thi aave) — login/signup jem PublicRoute
-          ma nathi rakhyu, kem ke logged-in user pan pota nu already-registered
-          bijo email verify karva mate aa link kholi shake */}
       <Route path="/verify-email" element={<EmailVerification />} />
 
       <Route
